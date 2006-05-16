@@ -1,0 +1,251 @@
+#!/usr/local/bin/ruby -w
+
+#--------------------
+# generate local and remote configurations
+#
+# $Id: module:nagios,v 1.4 2004/07/15 15:52:28 luke Exp $
+
+$: << "/home/luke/svn/naginator/lib"
+
+require 'getoptlong'
+require 'nagios'
+require 'resolv'
+
+$quiet = false
+
+def maybewrite(file,contents)
+	oldcontents = ""
+	#newcontents = objects.collect { |obj|
+	#	obj.to_s
+	#}.join("\n")
+	if FileTest.exists?(file)
+		File.open(file) { |openfile|
+			oldcontents = openfile.readlines.join
+		}
+	end
+
+	if oldcontents == contents
+		return false
+	else
+		File.open(file,"w") { |openfile|
+			openfile.write(contents)
+			return true
+		}
+	end
+end
+
+$cfclasses = []
+def cfenable(cfclass)
+	unless $cfclasses.include?(cfclass)
+		$cfclasses.push(cfclass)
+	end
+end
+
+genners = {
+	"local_disk" => proc { |object|
+		#regex = Regexp.new('\[[(^]+)]\]')
+		regex = Regexp.new('\[([^\]]+)\]')
+		# stupidly assumes we know how to call df
+		objects = %x{df}.split(/\n/) { |line|
+			puts line
+			fields = line.split(/\s+/)
+			disk = fields[0]
+			fs = fields[-1]
+
+			# stupidly assumes that local disk is mounted out of /dev
+			if disk =~ /^\// and disk !~ /^\/dev/ 
+				next
+			end
+
+			newobj = object.clone
+			newobj[:check_command] += "!" + disk
+
+			puts newobj.object_id
+			newobj
+		}
+#		objects = %x{check_disk -c 100 -w 100}.gsub(regex) { |match|
+#			#str = $1
+#			#puts "got match"
+#			puts $1
+#			#puts match
+#			str = $1
+#			vals = str.split(/\s/)
+#			disk = vals[-1]
+#			if disk =~ /^\// and disk !~ /^\/dev/ 
+#				next
+#			end
+#			newobj = object.clone
+#			newobj[:check_command] += "!" + disk
+#
+#			puts newobj.object_id
+#			newobj
+#		}
+#
+#		objects.each { |obj|
+#			puts obj
+#		}
+
+		objects
+	}
+}
+
+result = GetoptLong.new(
+	[ "--help",		"-h",            GetoptLong::NO_ARGUMENT ],
+	[ "--quiet",	"-q",            GetoptLong::NO_ARGUMENT ],
+	[ "--groups",	"-g",            GetoptLong::REQUIRED_ARGUMENT ],
+	[ "--services",	"-s",            GetoptLong::REQUIRED_ARGUMENT ],
+	[ "--local",	"-l",            GetoptLong::REQUIRED_ARGUMENT ],
+	[ "--remote",	"-r",            GetoptLong::REQUIRED_ARGUMENT ]
+)
+
+groups = []
+services = []
+
+# reasonable defaults
+files = {
+	"local" => "/etc/nagios/local.cfg",
+	"remote" => "/etc/nagios/remote.cfg",
+}
+
+result.each { |opt,arg|
+	case opt
+		when "--help"
+			puts "There is no help yet"
+			exit
+		when "--quiet"
+			$quiet = true
+		when "--groups"
+			groups = arg.split(/:/)
+		when "--services"
+			services = arg.split(/:/)
+		when "--local"
+			files["local"] = arg
+		when "--remote"
+			files["remote"] = arg
+		else
+			raise "Invalid option '#{opt}'"
+	end
+}
+
+unless files.include?("remote") and files.include?("local")
+	puts "You must include filenames for both the remote and local configs"
+	exit 1
+end
+
+commandfile = "/etc/nagios/checkcommands.cfg"
+hostgroupfile = "/etc/nagios/hostgroups.cfg"
+
+Nagios::Config.import(commandfile)
+Nagios::Config.import(hostgroupfile)
+
+hostname = %x{hostname}.chomp
+
+# there should probably be some error checking here...
+address = Resolv.getaddress(hostname)
+
+returns = []
+
+returns.push Nagios::Host.new(
+	:host_name => hostname,
+	:alias => hostname,
+	:use => "generic-host",
+	:address => address
+)
+
+services.each { |svc|
+
+	# some skullduggery to allow arguments for the commands
+	ext = ""
+	svc.sub!(/\!(.+)$/) { |match|
+		ext = match
+		match = ""
+	}
+
+	chkcmd = Nagios::Command["check_" + svc.downcase]
+
+	if chkcmd.nil?
+		puts "Could not find a checkcommand for service #{svc}"
+		next
+	end
+
+	chkcmdstr = chkcmd["command_name"]
+	desc = svc.sub(/local_/,"")
+	if ext != ""
+		chkcmdstr += ext
+		desc += ext.gsub(/\!/," ")
+	end
+
+	obj = Nagios::Service.new(
+		:host_name => hostname,
+		:use => "generic-service",
+		:name => desc,
+		:check_command => chkcmdstr
+	)
+
+	#if genners.has_key?(svc)
+	#	returns.push genners[svc].call(obj)
+	#else
+		returns.push obj
+	#end
+}
+
+groups.each { |group|
+	grpobj = Nagios::Hostgroup[group]
+
+	if grpobj.nil?
+		# don't warn on this...
+		#puts "Could not find a hostgroup for group #{group}"
+		next
+	end
+
+	if grpobj.include?(:members)
+		grpobj[:members] += "," + hostname
+	else
+		grpobj[:members] = hostname
+	end
+
+	returns.push grpobj
+}
+
+
+
+localtext = ""
+remotetext = ""
+returns.each { |object|
+	case object
+		when Nagios::Service
+			if (object[:check_command] =~ /local/)
+				localtext += object.to_s + "\n"
+
+				# use a different template
+				object[:use] = "passive-service"
+
+				# add some extra stuff to the object
+				#object[:passive_checks_enabled] = 1
+				#object[:check_freshness] = 1
+				#object[:freshness_threshold] = 900 # fifteen minutes
+				#object[:check_command] = "stale_passive_check"
+				#object[:active_checks_enabled] = 0
+
+				# and store it for sending
+				remotetext += object.to_s + "\n"
+			else
+				remotetext += object.to_s + "\n"
+			end
+		else
+			localtext += object.to_s + "\n"
+			remotetext += object.to_s + "\n"
+			
+	end
+}
+
+if maybewrite(files['remote'],remotetext)
+	cfenable "resend_nagios_config"
+end
+if maybewrite(files['local'],localtext)
+	cfenable "restart_local_nagios"
+end
+
+$cfclasses.each { |cfclass|
+	puts "+" + cfclass
+}

@@ -1,0 +1,41 @@
+#!/usr/local/bin/ruby -w
+
+#--------------------
+# collect the remote version of the config for each host
+#
+# $Id: nagcollect,v 1.1 2004/06/09 20:32:40 luke Exp $
+
+require 'getoptlong'
+
+	#[ "--size",	"-s",			GetoptLong::REQUIRED_ARGUMENT ],
+result = GetoptLong.new(
+	[ "--help",		"-h",			GetoptLong::NO_ARGUMENT ]
+)
+
+result.each { |opt,arg|
+	case opt
+		when "--help"
+			puts "There is no help yet"
+			exit
+		else
+			raise "Invalid option '#{opt}'"
+	end
+}
+
+File.open("/tmp/collector.cf","w") { |file|
+	file.print "control:
+	actionsequence = ( copy )
+	domain = ( madstop.com )
+
+copy:
+"
+	
+	ARGV.each { |host|
+		file.print "\t/etc/nagios/remote.cfg
+			dest=/tmp/collection/#{host}.cfg server=#{host}
+			backup=false
+"
+	}
+}
+
+system("/usr/local/sbin/cfagent -Kv -f /tmp/collector.cf")

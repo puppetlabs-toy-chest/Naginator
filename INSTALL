@@ -1,0 +1,226 @@
+INTRODUCTION
+
+There are three pieces to installing this package, once you have all of
+the prequisites out of the way:  Authentication, per-host configuration,
+and central configuration.  All of this will make much more sense
+if you look at the architecture diagram at
+http://madstop.com/naginator/nagios.png.
+
+PREREQUISITES
+
+You need a Ruby (http://www.ruby-lang.org) interpreter and Nagios
+(http://www.nagios.org) installed on all of your hosts, along with
+all of the plugins that you want to execute.  Cfengine
+(http://www.cfengine.org) is not a requirement, but you should be
+using it anyway, and it will certainly make this job easier.
+
+I also use my own packages 'enhost' and 'facter', currently only available via
+subversion (at http://madstop.com/svn/<package>).  They should be documented and
+have a page in a week or so.  Check this space.  I only use them for key
+management, though, so you can easily survive without them.
+
+If you find any more prereqs, please let me know.
+
+NOTES
+
+Many things are currently hardcoded, and I'm not even aware of all of those
+things.  Please notify me if you find something hardcoded that should not be.
+
+DEFAULTS
+
+Probably the only default that is not easily changed right now is the nagios
+user name: 'nagios'.  Hopefully this will be fixed some day.
+
+The default configuration directory for Nagios is /etc/nagios; configurations
+are generated into that directory, and scripts that require configs default to
+looking there.  Most scripts accept some kind of flag to change that, however.
+
+I use '/var/nagios' as ~nagios, but I almost always expand '~nagios' instead
+of using the full path, so as long as you have that set to the directory where
+you install the scripts and such, it should all work out okay.
+
+Also, because some of these scripts use libraries, you will need to either
+copy those libraries to a system default location (e.g., /usr/local/lib/ruby),
+or you'll need to add their location to LIBRUBY.  Or, you can modify the $: <<
+command I have in them, but that line will be removed when this project goes
+production.
+
+REASON FOR EXISTENCE
+
+A central Nagios process is great, because you can do host-alive and
+remote service checks on all of your hosts.  Unfortunately, it is difficult
+to use this process to do checks that have to be done on each local host,
+such as disk usage and usage statistics.  Sure, you can use NRPE, but there
+are reasons not to use this iterative method (we could argue those reasons,
+but suffice it to say I don't like the method).
+
+I prefer to have each host use NSCA to send the necessary information to
+the central server.  Unfortunately, that means that 1) each machine needs
+to have its own configuration, and 2) each machine needs to run Nagios.
+
+Fortunately, I use cfengine, and I use it in such a way that it already
+knows quite a bit about my machines.  One of the main reasons I want to
+use NSCA instead of NRPE is because NSCA and a local Nagios configuration
+allow me to reuse the information that my machines know about themselves
+from their cfengine configurations.  For instance, in cfengine I might
+configure a host to be a mail server; if I use NRPE, I have to store the
+fact that that host is a mail server in both cfengine and in Nagios,
+but if I can somehow generate a configuration out of cfengine, basing
+my configuration on only what cfengine already knows, then I am only
+configuring each piece of information once.  This is a very good thing.
+
+BASIC ARCHITECTURE
+
+Again, look at the architecture diagram at http://madstop.com/naginator/nagios.png.
+
+This project creates its configuration in a three step process:
+
+Initial Generation:
+
+First, cfengine runs its 'module:nagios' module; it passes to this module
+all classes configured for the host it is running on, along with
+a string containing a list of services to monitor.  These classes correspond
+directly to hostgroups configured in Nagios (via the 'hostgroups.cfg' file);
+in fact, the module parses the hostgroups file and just tries to match classes
+and hostgroups.  The host is added to any hostgroups that are matched.
+
+The string that gets passed to the module is a list of services.  These services
+coincidentally exactly correspond to services configured in the checkcommands.cfg
+file, and in fact the module parses that file and then searches through it for
+each of these services.  The one wrinkle is that you can pass a service with
+the '!argument' style, so you could say 'disk!/var'.
+
+The module now has a) a list of all the host groups our host is in, and b) a
+list of all of the services to monitor.  Currently, the module is hard-coded
+to use 'generic-host' and 'generic-service' for the parent, respectively, of
+the host and class configurations.  This could relatively easily be added as
+an option, but might complicate other things.
+
+So, the module just generates a configuration containing this information.
+However, there actually need to be two configurations:  One to run locally
+(for things like checking disks) and one for running on the central server
+(for checking services remotely, and also for receiving updates from NSCA and
+displaying stats in the web pages).  So, only services that match /local/ are
+put into the local configuration, and for the remote configuration file,
+local services are converted to passive checks (because, remember, the server
+will be receiving its info from NSCA).
+
+Okay, now we've got our configuration.
+
+Sending the configuration:
+
+For the local configuration, all we need to do is start the nagios process.
+For this, we have a special 'localnagios.cfg' file configured to run against
+the generated file (defaults to /etc/nagios/local.cfg), so we're basically done.
+Note that the local.cfg file contains the modified definitions for the
+hostgroups, so even though you need a hostgroups.cfg file to generate the
+configs, you should not import it in your nagios configuration file.
+
+For the remote configuration, we somehow have to get the generated
+'remote.cfg' file to our central host.  You can do this however you want, but
+I have written scripts for each end of this operation (sending and receiving)
+along with the necessary support structure to run these scripts over ssh.
+
+The sending script is 'nagsend', and it does not require any arguments (the
+default file to send is /etc/nagios/remote.cfg, and can be changed with
+--config <file>).  The receiving script is 'nagaccept', and it must be run
+with the host name of the host who is sending the script.   These scripts are
+written to be run on either end of a pipe, kind of like this:
+
+nagsend | ssh nagios@nagios nagaccept `hostname`
+
+Except that nagsend actually launches the ssh session; it looks a lot like the
+above line, though.  The hostname is required because it helps secure the
+system when using SSH (described below).
+
+Once the configuration is received, it defaults to being stored in
+~nagios/collection/<hostname>.cfg.  From there, the script 'nagconfig' is used
+to collate those configs into a single generated configuration (defaults to
+/etc/nagios/generated.cfg), which is imported by the central nagios
+configuration file.  Note that this generated file includes the modified
+hostgroups, so you should not import the hostgroups.cfg file in your nagios
+configuration.
+
+Okay, we're now done.  We just start our centralized server.  Note that the
+central server will have two configurations:  One running against the local
+nagios configuration, and one running against the central configuration.  I
+figured this was easier than treating that host specially in all of the
+scripts.  Feel free to complain, but complaints should definitely come with
+patches.
+
+AUTHENTICATION
+
+Okay, like I said, I use ssh to send these files.  I use keys to do so, which
+means I don't have to type passwords, which is good, because these scripts are
+all meant to run automatically (out of cfengine, for instance).
+
+What I have is each host's root user authenticating to my central host as the
+'nagios' user (this is mostly configurable -- at least 'nagsend' accepts a
+'--user' flag), and it uses the host private key for the authentication.  This
+requires the following pieces:
+
+1) The local host must have something like the following ~root/.ssh/config:
+Host nagios.domain.com nagios
+User nagios
+IdentityFile /etc/ssh/ssh_host_dsa_key
+ForwardAgent no
+ForwardX11 no
+Compression yes
+
+Obviously, change the paths as appropriate.  The other flags aren't required,
+but they help secure things just a bit.
+
+2) The local host must already have the central server's public key stored,
+either in root's known_hosts file or the central file, and the public key
+must have whatever host name you are using stored with it.  For instance, I
+have my host 'kirby' running my central nagios copy, but I have a cname to
+'nagios', and that's the host I ssh to.  This means I need to have kirby's
+public key on each system, but I need to have 'nagios' stored with that public
+key (probably in addition to 'kirby').
+
+3) The central server's nagios account must be configured to accept these
+logins by having each host's public key in ~nagios/.ssh/authorized_keys.  It
+is highly recommended that your configuration for each public key look
+something like this:
+
+no-port-forwarding,no-X11-forwarding,no-agent-forwarding,command="nagaccept
+hostname" ssh-dss [...key...]
+
+Notice the inclusion of the hostname in the command; this makes it so that
+the only command that this host can run as the nagios user is 'nagaccept',
+with its own hostname as an argument.  The absolute worst compromise you could
+get with this configuration is some other host being able to replace this
+host's nagios configuration, which is pretty darn secure, if you ask me.
+
+4) The central server's nagios account must be set up to find that 'nagaccept'
+command.  This means it needs to either be in a standard bin directory, or you
+need to add the appropriate path to ~nagios/.ssh/environment (and for current
+versions of SSH, you need to have 'PermitUserEnvironment yes' set in
+sshd_config).
+
+That's all.  (Yes, that's a bit sarcastic.)
+
+I use a couple scripts and LDAP to simplify the key management for me.  I use
+'enhost' (http://madstop.com/svn/enhost; probably not really documented) to
+collect the keys and store them in LDAP (it requires 'facter';
+http://madstop.com/svn/facter, also not well documented right now).  Feel free
+to try to get them running, but it might be easier for you to just wait a week
+or two if you want to use these, as I'll be documenting them ASAP.  If you
+really want to get started, though, feel free to use the enhost.schema file
+from the enhost repository.
+
+Once the keys are in LDAP, I use the 'nagkeys' script in the naginator package
+to pull them from LDAP and store them (using the above configuration) in
+~nagios/.ssh/authorized_keys.
+
+FINITO
+
+Yes, that's finally it.  Done.  It should all work.  It's a lot of work to
+set up, but with cfengine it should be much easier, and once it's set up,
+it just maintains itself indefinitely, even as you add more services.
+
+Oh, I also use the 'cfengine/bin/localdisks' script to pull a list of local disks
+and configure them to be monitored.  Not required, but a bit of help in
+making the configuration.
+
+Please email luke at madstop.com with problems.

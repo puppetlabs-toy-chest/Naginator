@@ -1,0 +1,208 @@
+#!/usr/local/bin/ruby -w
+
+#--------------------
+# create a nagios schema from the original c entries
+#
+# $Id: mkschema,v 1.1 2004/03/04 03:18:49 luke Exp $
+
+# this is some nastiness; how do i add a lib directory for ruby?
+require 'getoptlong'
+
+# a small hack; yay
+begin
+	require 'nagios.rb'
+rescue LoadError
+	puts "duh: export RUBYLIB=~/cvs/nagios/generation/lib/ruby/"
+	exit
+end
+
+result = GetoptLong.new(
+	[ "--help",		"-h",            GetoptLong::NO_ARGUMENT ]
+)
+
+module Syntax
+	@@syntaxes = Hash.new(
+		:string => {
+			:syntax => "1.3.6.1.4.1.1466.115.121.1.26",
+			:equality => "integerMatch"
+		},
+		:integer => {
+			:syntax => "1.3.6.1.4.1.1466.115.121.1.27",
+			:equality => "caseIgnoreIA5Match",
+			:substr => "caseIgnoreIA5SubstringsMatch"
+		},
+		:ipaddress => {
+			:syntax => "1.3.6.1.4.1.1466.115.121.1.26{128}",
+			:equality => "integerMatch"
+		}
+	)
+	#{ |var,value|
+	#	raise "Unknown value #{value}"
+	#}
+	def Syntax.config(type)
+		return @@syntaxes[type]
+	end
+end
+
+module Fun
+	@@length = 70
+
+	def Fun.pprint(string)
+		strings = Array.new
+		newstring = ""
+
+		while string.size > 0
+			string.sub!(/(\S+)(\s+|$)/,'')
+			chunk = $1
+			if chunk.nil?
+				break
+			end
+			if newstring.size + chunk.size > @@length
+				strings.push newstring
+				newstring = chunk
+			else
+				newstring += " " + chunk
+			end
+		end
+		strings.push newstring
+
+		return strings.join("\n\t\t")
+	end
+end
+
+module Oid
+	@@base = "1.1.1.1"
+	@@incr = 0
+
+	def Oid.next
+		@@incr += 1
+		return "#{@@base}.#{@@incr}"
+	end
+end
+
+#def Object.nextoid
+#	@incr += 1
+#	return "#{@base}.#{@incr}"
+#end
+
+class Attribute
+	attr_reader :name
+
+	@@attrs = Hash.new
+
+	def Attribute.create(attr,type)
+		name = attr.id2name
+		unless @@attrs.include?(name)
+			Attribute.new(name)
+		end
+	end
+
+	def Attribute.to_s
+		#@@attrs.sort!
+		return @@attrs.sort.collect { |attr,obj|
+			obj.to_s
+		}.join('')
+	end
+
+	def <=>(other)
+		self.name <=> other.name
+	end
+
+	def getdata
+		hash = Syntax.config(@type)
+		@syntax = hash[:syntax]
+		@equality = hash[:equality]
+
+		if hash.include?(:substr)
+			@substr = hash[:substr]
+		end
+	end
+
+	def initialize(attr,type)
+		@@attrs[attr] = self
+
+		@name = attr
+		@type = type
+		@oid = Oid.next
+
+		self.getdata
+	end
+
+	def to_s
+		return %{attributetype ( #{@oid} NAME '#{"nagios_" + @name}'
+	DESC 'Nagios Attribute #{@name}'
+	EQUALITY #{@equality}
+	SYNTAX #{@syntax} SINGLE-VALUE )
+
+}
+	end
+end
+
+class Objectclass
+	attr_reader :name
+
+	@@classes = Array.new
+
+	def <=>(other)
+		self.name <=> other.name
+	end
+
+	def Objectclass.to_s
+		#@@classes.sort!
+		@@classes.sort.each { |klass|
+			klass.to_s
+		}
+	end
+
+	def initialize(oc,ary)
+		@@classes.push self
+		@oid = Oid.next
+		@name = oc
+		@params = ary.collect { |param| "nagios_" + param.id2name }
+	end
+
+	def to_s
+		return %{objectclass ( #{@oid} NAME '#{"nagios_" + @name}' SUP top AUXILIARY
+	DESC 'Nagios Class #{@name}'
+	MAY ( } + Fun.pprint(@params.sort.join(' $ ') + " ) )") + "\n\n"
+	end
+end
+
+# create them from nagios.rb
+#Nagios::Object.derivatives.each{ |object,klass|
+#	Objectclass.new(object,klass.params)
+#	klass.params.each { |param|
+#		Attribute.create(param)
+#	}
+#}
+
+# create the objects from the C files
+files = %w{
+	/sfw/build/nagios/1.1/xdata/xedtemplate.h
+	/sfw/build/nagios/1.1/xdata/xodtemplate.h
+}
+
+files.each { |name|
+	File.open(name) { |file|
+		contents = file.collect { |line|
+			line
+		}.join()
+
+		contents.sub!(/typedef struct (\S+)_struct\{([^\}]+)\}/,'')
+		#contents.sub!(/typedef struct \S+\{([^\}]+)\}/,'')
+		if $1 and $2
+		#if $1
+			name = $1
+			body = $2
+			body.sub!(/\s+struct .*\n/,'')
+			puts name, body
+			#puts name
+		else
+			puts "nothing"
+		end
+	}
+}
+
+#puts Attribute.to_s
+#print "\n"
+#puts Objectclass.to_s

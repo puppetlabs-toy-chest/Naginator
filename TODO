@@ -1,0 +1,10 @@
+Remove the hard-coding of 'nagios' as the nagios user.
+
+Remove most other hard-coding stuff.
+
+Default to creating 'local-service' and 'remote-service'
+
+Fix all cfengine scripts so they actually do all of the necessary work (they
+currently don't run nagconfig, for instance).
+
+Document enhost and facter so they can be easily used here.

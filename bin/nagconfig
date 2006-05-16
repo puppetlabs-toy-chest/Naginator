@@ -1,0 +1,114 @@
+#!/usr/local/bin/ruby -w
+
+#--------------------
+# collate the collected nagios configurations
+#
+# $Id: nagconfig,v 1.2 2004/07/20 22:13:39 luke Exp $
+
+$: << "/home/luke/svn/naginator/lib/ruby"
+
+require 'getoptlong'
+require 'nagios'
+
+def maybewrite(file,contents)
+	oldcontents = ""
+	if FileTest.exists?(file)
+		File.open(file) { |openfile|
+			oldcontents = openfile.readlines.join
+		}
+	end
+
+	if oldcontents == contents
+		return false
+	else
+		File.open(file,"w") { |openfile|
+			openfile.write(contents)
+			return true
+		}
+	end
+end
+
+result = GetoptLong.new(
+	[ "--help",		"-h",            GetoptLong::NO_ARGUMENT ],
+	[ "--directory","-d",            GetoptLong::REQUIRED_ARGUMENT ],
+	[ "--groupfile","-g",            GetoptLong::REQUIRED_ARGUMENT ],
+	[ "--outfile",	"-o",            GetoptLong::REQUIRED_ARGUMENT ]
+)
+
+dir = File.expand_path("~nagios/collection")
+groupfile = "/etc/nagios/hostgroups.cfg"
+outfile = "/etc/nagios/generated.cfg"
+
+result.each { |opt,arg|
+	case opt
+		when "--help"
+			puts "There is no help yet"
+			exit
+		when "--groupfile"
+			groupfile = arg
+		when "--outfile"
+			outfile = arg
+		when "--directory"
+			dir = arg
+		else
+			raise "Invalid option '#{opt}'"
+	end
+}
+
+objects = []
+groups = {}
+Nagios::Config.import(groupfile).each { |group|
+	groups[group[:name]] = group
+}
+
+Dir.foreach(dir) { |file|
+	if file =~ /^\.+/
+		next
+	end
+	host = file.sub(/\..+$/,"")
+
+	entries = Nagios::Config.import(dir + "/" + file)
+
+	entries.each { |entry|
+		case entry
+			when Nagios::Hostgroup
+				obj = groups[entry[:name]]
+				if obj.nil?
+					next
+				end
+
+				# pushing would be nice here, but i've apparently already used that
+				# dern
+				if obj.include?(:members)
+					obj[:members] += "," + host
+				else
+					obj[:members] = host
+				end
+				next
+		end
+		objects.push entry
+	}
+}
+
+groups.each { |name,obj|
+	unless obj.include?(:members)
+		groups.delete(name)
+	end
+}
+
+str = [objects.flatten, groups.values].collect { |object|
+	object.to_s
+}.join("\n")
+
+restfile = File.dirname(outfile) + "/.needs_restart"
+
+if maybewrite(outfile,str)
+	puts "writing file #{restfile}"
+	File.open(restfile, "w") { |openfile|
+		openfile.puts 1
+	}
+end
+
+if FileTest.exists?("#{dir}/.needs_rebuild")
+	File.unlink("#{dir}/.needs_rebuild")
+end

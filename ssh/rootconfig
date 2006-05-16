@@ -1,0 +1,6 @@
+Host nagios.madstop.com nagios
+User nagios
+IdentityFile /etc/ssh/ssh_host_dsa_key
+ForwardAgent no
+ForwardX11 no
+Compression yes

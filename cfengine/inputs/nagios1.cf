@@ -1,0 +1,19 @@
+#---------------------------------------------------------------
+#
+# nagios.cf
+#
+# setup for nagios module
+#
+#---------------------------------------------------------------
+ 
+control:
+	#AllowRedefinitionOf = ( nagSvcs )
+	allowredefinitionof = ( nagSvcs )
+	nagSvcs = ( "" )
+
+	diskSvcs = ( ExecResult(/var/cfng/bin/localdisks --nagios) )
+
+	nagSvcs = ( "${diskSvcs}:ping" )
+
+	kirby::
+		nagSvcs = ( "${nagSvcs}:dns:smtp:http:nsca" )

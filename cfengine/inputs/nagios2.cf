@@ -1,0 +1,76 @@
+#---------------------------------------------------------------
+#
+# nagios2.cf
+#
+# nagios module execution
+#
+# this file has two sections:
+# client and server
+#
+#---------------------------------------------------------------
+
+#---------------------------------------------
+# client section
+# here are the steps:
+# --run the module, which might create new local.cfg and remote.cfg files
+# --if we have new files, HUP the local nagios process
+# --if we have new files, send the remote.cfg to the central server
+control:
+	# these can be enabled by the module
+	addinstallable = ( restart_local_nagios resend_nagios_config
+			rebuild_nagios_config restart_central_nagios )
+
+	# module can set 'restart_local_nagios' and 'resend_nagios_config'
+	actionsequence = ( "module:nagios -g ${ALLCLASSES} -s ${nagSvcs}"
+			shellcommands.nagsend processes.localnaghup )
+
+processes:
+	restart_local_nagios.localnaghup::
+		"nagios.*localnagios.cfg.*" action=signal signal=HUP
+
+shellcommands:
+	# send our config in again
+	resend_nagios_config.nagsend::
+		"/usr/local/scripts/nagsend"
+
+# client section
+#---------------------------------------------
+
+#---------------------------------------------
+# server section
+# here are the steps:
+# --check to see if we've received any new files (via nagaccept, which
+#	creates /var/nagios/collection/.needs_rebuild
+# --if we have new files, rebuild the central nagios configuration
+#	(/etc/nagios/generated.cfg) and create /etc/nagios/.needs_restart
+# --if /etc/nagios/.needs_restart exists, restart the central
+#	nagios processes
+
+# from here out, this stuff only happens on the server
+control:
+	nagios_server::
+		actionsequence = (
+			disable.nagrebuildcheck shellcommands.nagrebuild
+			disable.nagrestartcheck processes.centralnaghup
+		)
+
+# annoyingly, I can't just delete the files; instead i have to
+# rename them
+disable:
+	nagrebuildcheck::
+		/var/nagios/collection/.needs_rebuild define=rebuild_nagios_config
+
+shellcommands:
+	# this script creates /etc/nagios/.needs_restart
+	rebuild_nagios_config.nagrebuild::
+		"/usr/local/scripts/nagconfig"
+
+disable:
+	nagrestartcheck::
+		/etc/nagios/.needs_restart define=restart_central_nagios
+
+processes:
+	restart_central_nagios.centralnaghup::
+		"nagios.*centralnagios.cfg.*" action=signal signal=HUP
+# server section
+#---------------------------------------------

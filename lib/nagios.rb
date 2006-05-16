@@ -1,0 +1,48 @@
+#!/usr/local/bin/ruby -w
+
+#--------------------
+# A script to retrieve hosts from ldap and create an importable
+# cfservd file from them
+#
+# $Id: nagios.rb,v 1.3 2004/06/09 20:32:46 luke Exp $
+
+require 'digest/md5'
+#require 'ldap'
+require 'nagios/parser.rb'
+require 'nagios/object.rb'
+
+# yay colors
+PINK = "[0;31m"
+GREEN = "[0;32m"
+YELLOW = "[0;33m"
+SLATE = "[0;34m"
+ORANGE = "[0;35m"
+BLUE = "[0;36m"
+NOCOLOR = "[0m"
+RESET = "[0m"
+
+module Nagios
+	#------------------------------------------------------------
+	#
+	#------------------------------------------------------------
+	class Config
+		def Config.import(config)
+
+			text = String.new
+
+			File.open(config) { |file|
+				file.each { |line|
+					text += line
+				}
+			}
+			parser = Nagios::Parser.new
+			return parser.parse(text)
+		end
+		
+		def Config.each
+			Nagios::Object.objects.each { |object|
+				yield object
+			}
+		end
+	end
+end

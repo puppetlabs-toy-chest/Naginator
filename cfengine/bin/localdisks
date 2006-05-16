@@ -1,0 +1,101 @@
+#!/usr/local/bin/ruby -w
+
+#--------------------
+# produce the list of local disks
+#
+# $Id: localdisks,v 1.1 2004/06/09 23:43:20 luke Exp $
+
+require 'getoptlong'
+
+commands = {
+	"default" => "/bin/df -lk",
+	"SunOS" => "/usr/local/bin/df -lk"
+}
+
+parsers = {
+	"default" => proc { |cmd|
+		dev = {}
+		fs = {}
+		disks = []
+
+		lines = []
+
+		IO.popen(cmd) { |pipe|
+			while line = pipe.gets 
+				if line =~ /^\s/
+					lines[-1] += line
+				else
+					lines.push line
+				end
+			end
+		}
+
+		lines.reject { |string|
+			string =~ /^Filesystem/
+		}.each { |line|
+			fields = line.split(/\s+/)
+			if fields[0] !~ /^\/dev/ and fields[0] =~ /^\//
+				# ignore non-dev filesystems, as they're local nfs
+				# i think
+				next
+			end
+			if dev.include?(fields[0])
+				next
+			end
+			dev[fields[0]] = 1
+			if fs.include?(fields[-1])
+				next
+			end
+
+			fs[fields[-1]] = 1
+			disks.push fields[-1]
+		}
+
+		disks
+	}
+
+}
+
+	#[ "--size",	"-s",			GetoptLong::REQUIRED_ARGUMENT ],
+result = GetoptLong.new(
+	[ "--help",		"-h",			GetoptLong::NO_ARGUMENT ],
+	[ "--nagios",	"-n",			GetoptLong::NO_ARGUMENT ]
+)
+
+nagios = 0
+
+result.each { |opt,arg|
+	case opt
+		when "--help"
+			puts "There is no help yet"
+			exit
+		when "--nagios"
+			nagios = 1
+		else
+			raise "Invalid option '#{opt}'"
+	end
+}
+
+uname = %x{uname -s}.chomp
+
+cmd = ""
+if commands.include?(uname)
+	cmd = commands[uname]
+else
+	cmd = commands["default"]
+end
+
+parser = ""
+if parsers.include?(uname)
+	parser = parsers[uname]
+else
+	parser = parsers["default"]
+end
+
+if nagios > 0
+	puts parser.call(cmd).collect { |disk|
+		"local_disk!#{disk}"
+	}.join(":")
+else
+	puts parser.call(cmd)
+end

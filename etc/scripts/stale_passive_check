@@ -1,0 +1,4 @@
+#!/bin/sh
+
+/bin/echo "CRITICAL: $1 is stale on $2"
+exit 2

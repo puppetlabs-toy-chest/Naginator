@@ -1,0 +1,65 @@
+control:
+	actionsequence = ( processes.nagprocs copy.nagcopy shellcommands.nagkeys
+						editfiles.nagenv )
+
+directories:
+	/var/nagios							o=nagios
+										g=nagios
+										m=755
+	/var/nagios/rw						o=nagios
+										g=nagios
+										m=755
+	/var/nagios/collection				o=nagios
+										g=nagios
+										m=755
+	/var/nagios/bin						o=root
+										g=root
+										m=755
+
+processes:
+	nagprocs.nagios_server::
+		"nagios"	restart "/usr/local/bin/nagios -d /etc/nagios/centralnagios.cfg"
+		"nsca"	restart "/usr/local/bin/nsca -c /etc/nagios/nsca.cfg"
+
+	nagprocs::
+		"nagios"	restart "/usr/local/bin/nagios -d /etc/nagios/localnagios.cfg"
+
+copy:
+	nagcopy::
+		${filesource}/apps/nagios		dest=/etc/nagios
+										mode=644
+										owner=root
+										group=root
+										r=inf
+										server=${fileserver}
+										backup=false
+										define=restart_central_nagios,restart_local_nagios
+
+	nagcopy.cfengine_server::
+		/dist/naginator/bin				dest=/dist/code/scripts
+										mode=755
+										owner=root
+										group=root
+										r=inf
+										backup=false
+
+	# this is so we can be very restrictive in the authorized_keys file
+	nagcopy.nagios_server::
+		/usr/local/scripts/nagaccept	dest=/var/nagios/bin/nagaccept
+										mode=755
+										owner=root
+										group=root
+										backup=false
+
+
+shellcommands:
+	nagkeys.nagios_server.Hourly::
+		"/usr/local/scripts/nagkeys -u nagios"
+
+editfiles:
+	nagenv::
+		{ /var/nagios/.ssh/environment
+			SetLine "PATH=/var/nagios/bin"
+			AppendIfNoLineMatching "PATH.*"
+			Create
+		}

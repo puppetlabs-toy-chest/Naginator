@@ -1,0 +1,91 @@
+#!/usr/local/bin/ruby -w
+
+#--------------------
+# pull keys out of ldap and create an authorized_keys file for nagios auth
+#
+# $Id: template.rb,v 1.3 2004/02/05 01:16:29 luke Exp $
+
+require 'getoptlong'
+require 'ldap'
+require 'etc'
+
+$options = %w{no-port-forwarding no-X11-forwarding no-agent-forwarding}
+
+def command(hostname)
+	return "command=\"nagaccept #{hostname}\""
+end
+
+def keyline(host,key)
+	#return $options.join(",") + "," + command(host) + " " key
+	return $options.join(",") + "," + command(host) + " " + key + "\n"
+end
+
+def maybewrite(file,contents)
+	oldcontents = ""
+	if FileTest.exists?(file)
+		File.open(file) { |openfile|
+			oldcontents = openfile.readlines.join
+		}
+	end
+
+	if oldcontents == contents
+		return false
+	else
+		File.open(file,"w") { |openfile|
+			openfile.write(contents)
+			return true
+		}
+	end
+end
+
+result = GetoptLong.new(
+	[ "--help",		"-h",			GetoptLong::NO_ARGUMENT ],
+	[ "--user",		"-u",			GetoptLong::REQUIRED_ARGUMENT ]
+)
+
+user = "nagios"
+
+result.each { |opt,arg|
+	case opt
+		when "--help"
+			puts "There is no help yet"
+			exit
+		when "--user"
+			user = arg
+		else
+			raise "Invalid option '#{opt}'"
+	end
+}
+
+uid = Etc::getpwnam(user).uid
+gid = Etc::getpwnam(user).gid
+
+filename = File.expand_path("~#{user}/.ssh/authorized_keys")
+
+dir = File.dirname(filename)
+
+unless FileTest.directory?(dir)
+	Dir.mkdir(dir)
+end
+
+File.chmod(0700,dir)
+File.chown(uid,gid,dir)
+
+hosts = {}
+contents = ""
+
+ldap = LDAP::Conn.new("ldap.madstop.com")
+ldap.search("dc=madstop,dc=com",2,"(&(objectclass=enhost)(sshdsakey=*))",["sshdsakey"]) { |entry|
+	hostname = entry.dn.sub(/cn=/,"").sub(/,.+$/,"")
+	hash = entry.to_hash
+	contents += keyline(hostname,hash["sshdsakey"][0])
+}
+
+if maybewrite(filename,contents)
+	puts "written"
+end
+
+File.chmod(0600,filename)
+File.chown(uid,gid,filename)
+
+

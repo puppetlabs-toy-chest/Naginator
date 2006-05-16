@@ -1,0 +1,14 @@
+$Id$
+
+This directory is probably out of date.  The 'makefile' in this directory
+copies the necessary files from my cfengine repository.
+
+These are the files I use to integrate cfengine with my nagios configuration
+generation.  You can probably figure out most of it; the only pieces missing
+are the parts the import all of the modules.  You could just about import them
+all directly, but if you want to see how I do it, drop me an email.
+
+I'm planning to make this a real, permanent solution, but I wanted to get this
+published, rather than sit on it until it's perfect.
+
+Luke
