@@ -30,29 +30,39 @@
 # 5) Install all library files ending in .rb from lib/ into Ruby's
 #    site_lib/version directory.
 #
-# $Id: install.rb,v 1.6 2004/08/08 20:33:09 austin Exp $
+# $Id: install.rb 1030 2006-03-14 04:29:26Z luke $
 #++
 
 require 'rbconfig'
 require 'find'
 require 'fileutils'
-require 'rdoc/rdoc'
+require 'ftools' # apparently on some system ftools doesn't get loaded
 require 'optparse'
 require 'ostruct'
+
+begin
+    require 'rdoc/rdoc'
+    $haverdoc = true
+rescue LoadError
+    puts "Missing rdoc; skipping documentation"
+    $haverdoc = false
+end
+
+PREREQS = %w{openssl facter xmlrpc/client xmlrpc/server cgi}
 
 InstallOptions = OpenStruct.new
 
 def glob(list)
-  g = list.map { |i| Dir.glob(i) }
-  g.flatten!
-  g.compact!
-  g.reject! { |e| e =~ /CVS/ }
-  g
+    g = list.map { |i| Dir.glob(i) }
+    g.flatten!
+    g.compact!
+    g.reject! { |e| e =~ /\.svn/ }
+    g
 end
 
-  # Set these values to what you want installed.
-bins  = glob(%w{bin/nag*})
-rdoc  = glob(%w{bin/**/* lib/**/*.rb README ChangeLog Install}).reject { |e| e=~ /\.(bat|cmd)$/ }
+# Set these values to what you want installed.
+bins  = glob(%w{bin/**/*})
+rdoc  = glob(%w{bin/**/* lib/**/*.rb README README-library CHANGELOG TODO Install}).reject { |e| e=~ /\.(bat|cmd)$/ }
 ri    = glob(%w(bin/**/*.rb lib/**/*.rb)).reject { |e| e=~ /\.(bat|cmd)$/ }
 libs  = glob(%w{lib/**/*.rb})
 tests = glob(%w{tests/**/*.rb})
@@ -74,15 +84,32 @@ def do_libs(libs, strip = 'lib/')
   end
 end
 
+# Verify that all of the prereqs are installed
+def check_prereqs
+    PREREQS.each { |pre|
+        begin
+            require pre
+        rescue LoadError
+            puts "Could not load %s; cannot install" % pre
+        end
+    }
+end
+
 ##
 # Prepare the file installation.
 #
 def prepare_installation
-  InstallOptions.rdoc  = true
-  if RUBY_PLATFORM == "i386-mswin32"
-    InstallOptions.ri  = false
+  # Only try to do docs if we're sure they have rdoc
+  if $haverdoc
+      InstallOptions.rdoc  = true
+      if RUBY_PLATFORM == "i386-mswin32"
+        InstallOptions.ri  = false
+      else
+        InstallOptions.ri  = true
+      end
   else
-    InstallOptions.ri  = true
+      InstallOptions.rdoc  = false
+      InstallOptions.ri  = false
   end
   InstallOptions.tests = true
 
@@ -153,40 +180,51 @@ end
 # Build the rdoc documentation. Also, try to build the RI documentation.
 #
 def build_rdoc(files)
-  r = RDoc::RDoc.new
-  r.document(["--main", "README", "--title", "Diff::LCS -- A Diff Algorithm",
-              "--line-numbers"] + files)
-
-rescue RDoc::RDocError => e
-  $stderr.puts e.message
-rescue Exception => e
-  $stderr.puts "Couldn't build RDoc documentation\n#{e.message}"
+    return unless $haverdoc
+    begin
+        r = RDoc::RDoc.new
+        r.document(["--main", "README", "--title",
+            "Puppet -- Site Configuration Management", "--line-numbers"] + files)
+    rescue RDoc::RDocError => e
+        $stderr.puts e.message
+    rescue Exception => e
+        $stderr.puts "Couldn't build RDoc documentation\n#{e.message}"
+    end
 end
 
 def build_ri(files)
-  ri = RDoc::RDoc.new
-  ri.document(["--ri-site", "--merge"] + files)
-rescue RDoc::RDocError => e
-  $stderr.puts e.message
-rescue Exception => e
-  $stderr.puts "Couldn't build Ri documentation\n#{e.message}"
+    return unless $haverdoc
+    begin
+        ri = RDoc::RDoc.new
+        #ri.document(["--ri-site", "--merge"] + files)
+        ri.document(["--ri-site"] + files)
+    rescue RDoc::RDocError => e
+        $stderr.puts e.message
+    rescue Exception => e
+        $stderr.puts "Couldn't build Ri documentation\n#{e.message}"
+        $stderr.puts "Continuing with install..."
+    end
 end
 
 def run_tests(test_list)
-  require 'test/unit/ui/console/testrunner'
-  $:.unshift "lib"
-  test_list.each do |test|
-    next if File.directory?(test)
-    require test
-  end
+	begin
+		require 'test/unit/ui/console/testrunner'
+		$:.unshift "lib"
+		test_list.each do |test|
+		next if File.directory?(test)
+		require test
+		end
 
-  tests = []
-  ObjectSpace.each_object { |o| tests << o if o.kind_of?(Class) } 
-  tests.delete_if { |o| !o.ancestors.include?(Test::Unit::TestCase) }
-  tests.delete_if { |o| o == Test::Unit::TestCase }
+		tests = []
+		ObjectSpace.each_object { |o| tests << o if o.kind_of?(Class) } 
+		tests.delete_if { |o| !o.ancestors.include?(Test::Unit::TestCase) }
+		tests.delete_if { |o| o == Test::Unit::TestCase }
 
-  tests.each { |test| Test::Unit::UI::Console::TestRunner.run(test) }
-  $:.shift
+		tests.each { |test| Test::Unit::UI::Console::TestRunner.run(test) }
+		$:.shift
+	rescue LoadError
+		puts "Missing testrunner library; skipping tests"
+	end
 end
 
 ##
@@ -255,10 +293,11 @@ goto done
 :done
 EOS
 
+check_prereqs
 prepare_installation
 
 run_tests(tests) if InstallOptions.tests
-build_rdoc(rdoc) if InstallOptions.rdoc
-build_ri(ri) if InstallOptions.ri
+#build_rdoc(rdoc) if InstallOptions.rdoc
+#build_ri(ri) if InstallOptions.ri
 do_bins(bins, Config::CONFIG['bindir'])
 do_libs(libs)
