@@ -27,7 +27,7 @@ comment: COMMENT RETURN { result = nil }
 	;
 
 object: DEFINE NAME LCURLY RETURN vars RCURLY {
-		result = Nagios::Object.create(val[1],val[4])
+		result = Nagios::Base.create(val[1],val[4])
 	}
 	;
 
@@ -40,8 +40,12 @@ vars: var
 	}
 	;
 
-var: PARAM VALUE icomment RETURN { result = {val[0],val[1]} }
+var: PARAM VALUE icomment returns { result = {val[0],val[1]} }
 	;
+
+returns:      RETURN
+            | returns RETURN
+            ;
 
 icomment: # nothing
 	| INLINECOMMENT
@@ -50,9 +54,6 @@ icomment: # nothing
 end
 
 ----inner
-
-def initialize
-end
 
 def parse(src)
 	@src = src
@@ -73,6 +74,7 @@ def parse(src)
     end
 end
 
+# The lexer.  Very simple.
 def token
 	@src.sub!(/\A\n/,'')
 	if $&
@@ -114,50 +116,49 @@ def token
 		return [:VALUE, yytext]
 	else
 		@src.sub!(/\A[\t ]*(\S+)([\t ]*|$)/,'')
-	if $1
-		yytext = $1
-		case yytext
-		when 'define'
-			#puts "got define"
-			return [:DEFINE, yytext]
-		when '{'
-			#puts "got {"
-			@inobject = true
-			return [:LCURLY, yytext]
-		else
-			unless @inobject
-				#puts "got type: #{yytext}"
-				if yytext =~ /\W/
-					giveback = yytext.dup
-					giveback.sub!(/^\w+/,'')
-					#puts "giveback " + giveback
-					#puts "yytext " + yytext
-					yytext.sub!(/\W.*$/,'')
-					#puts "yytext " + yytext
-					#puts "all [#{giveback} #{yytext} #{orig}]"
-					@src = giveback + @src
-				end
-				return [:NAME, yytext]
-			else
-				if yytext == '}'
-					#puts "got closure: #{yytext}"
-					@inobject = false
-					return [:RCURLY, '}']
-				end
+        if $1
+            yytext = $1
+            case yytext
+            when 'define'
+                #puts "got define"
+                return [:DEFINE, yytext]
+            when '{'
+                #puts "got {"
+                @inobject = true
+                return [:LCURLY, yytext]
+            else
+                unless @inobject
+                    #puts "got type: #{yytext}"
+                    if yytext =~ /\W/
+                        giveback = yytext.dup
+                        giveback.sub!(/^\w+/,'')
+                        #puts "giveback " + giveback
+                        #puts "yytext " + yytext
+                        yytext.sub!(/\W.*$/,'')
+                        #puts "yytext " + yytext
+                        #puts "all [#{giveback} #{yytext} #{orig}]"
+                        @src = giveback + @src
+                    end
+                    return [:NAME, yytext]
+                else
+                    if yytext == '}'
+                        #puts "got closure: #{yytext}"
+                        @inobject = false
+                        return [:RCURLY, '}']
+                    end
 
-				unless @invar
-					@invar = true
-					return [:PARAM, $1]
-				else
-				end
-			end
-		end
-	end
+                    unless @invar
+                        @invar = true
+                        return [:PARAM, $1]
+                    else
+                    end
+                end
+            end
+        end
 	end
 end
 
 def next_token
-	#@tokens.shift
 	token
 end
 

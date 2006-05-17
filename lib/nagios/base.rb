@@ -38,16 +38,6 @@ class Nagios::Base
         end
     end
 
-    # Create a new subclass.
-    def self.inherited(sub)
-        classname = sub.to_s                                                     
-        classname.gsub!(/Nagios::/i, '')                                       
-        classname.downcase!                                                      
-        @derivatives[classname] = sub                                            
-
-        sub.name = classname
-    end 
-
     # Create a mapping.
     def self.map(hash)
         @map ||= {}
@@ -80,6 +70,11 @@ class Nagios::Base
         t = Class.new(self)
         t.name = name
 
+        # Everyone gets this.  There should probably be a better way, and I
+        # should probably hack the attribute system to look things up based on
+        # this "use" setting, but, eh.
+        t.parameters = [:use]
+
         const_set(name.to_s.capitalize,t)
 
         # Evaluate the passed block.  This should usually define all of the work.
@@ -102,7 +97,7 @@ class Nagios::Base
 
     # Set the valid parameters for this class
     def self.setparameters(*array)
-        @parameters = array
+        @parameters += array
     end
 
     # Parameters to suppress in output.
@@ -177,6 +172,11 @@ class Nagios::Base
     # Retrieve our name, through a bit of redirection.
     def name
         send(self.class.namevar)
+    end
+
+    # This is probably a bad idea.
+    def name=(value)
+        send(self.class.namevar.to_s + "=", value)
     end
 
     def namevar
@@ -281,7 +281,9 @@ class Nagios::Base
 			:flap_detection_enabled, :process_perf_data, :retain_status_information,
 			:retain_nonstatus_information, :register, :use, :alias,
 			:address, :check_command, :max_check_attempts, :notification_interval,
-			:notification_period, :notification_options
+			:notification_period, :notification_options, :checks_enabled,
+            :failure_prediction_enabled, :parents
+
 		@ocs = [ "ipHost" ]
 
         map :address => "ipHostNumber"
@@ -318,7 +320,8 @@ class Nagios::Base
             :is_volatile, :check_period, :max_check_attempts,
             :normal_check_interval, :retry_check_interval, :contact_groups,
             :notification_interval, :notification_period, :notification_options,
-            :service_description, :host_name, :freshness_threshold
+            :service_description, :host_name, :freshness_threshold,
+            :check_command
 
         suppress :host_name
 
@@ -333,6 +336,13 @@ class Nagios::Base
 
         setnamevar :host_name
 	end
+
+    newtype :serviceescalation do
+        setparameters :host_name, :service_description, :first_notification,
+            :last_notification, :contact_groups, :notification_interval
+
+        setnamevar :host_name
+    end
 
 	newtype :serviceextinfo do
         auxiliary = true

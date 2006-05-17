@@ -6,7 +6,7 @@ require 'test/unit'
 
 require 'nagios'
 
-class TestNaginator < Test::Unit::TestCase
+class TestBase < Test::Unit::TestCase
     # Verify that our params are available as attributes.
     def test_attributes
         host = nil
