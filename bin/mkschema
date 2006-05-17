@@ -1,20 +1,11 @@
 #!/usr/local/bin/ruby -w
 
 #--------------------
-# create a nagios schema from the original c entries
+# Create a nagios schema from the classes
 #
-# $Id: mkschema,v 1.1 2004/03/04 03:18:49 luke Exp $
 
-# this is some nastiness; how do i add a lib directory for ruby?
 require 'getoptlong'
-
-# a small hack; yay
-begin
-	require 'nagios.rb'
-rescue LoadError
-	puts "duh: export RUBYLIB=~/cvs/nagios/generation/lib/ruby/"
-	exit
-end
+require 'nagios.rb'
 
 result = GetoptLong.new(
 	[ "--help",		"-h",            GetoptLong::NO_ARGUMENT ]
@@ -36,9 +27,6 @@ module Syntax
 			:equality => "integerMatch"
 		}
 	)
-	#{ |var,value|
-	#	raise "Unknown value #{value}"
-	#}
 	def Syntax.config(type)
 		return @@syntaxes[type]
 	end
@@ -80,11 +68,6 @@ module Oid
 	end
 end
 
-#def Object.nextoid
-#	@incr += 1
-#	return "#{@base}.#{@incr}"
-#end
-
 class Attribute
 	attr_reader :name
 
@@ -118,10 +101,10 @@ class Attribute
 		end
 	end
 
-	def initialize(attr,type)
-		@@attrs[attr] = self
+	def initialize(name,type = :string)
+		@@attrs[name] = self
 
-		@name = attr
+		@name = name
 		@type = type
 		@oid = Oid.next
 
@@ -129,7 +112,7 @@ class Attribute
 	end
 
 	def to_s
-		return %{attributetype ( #{@oid} NAME '#{"nagios_" + @name}'
+		return %{attributetype ( #{@oid} NAME 'nagios_#{@name}'
 	DESC 'Nagios Attribute #{@name}'
 	EQUALITY #{@equality}
 	SYNTAX #{@syntax} SINGLE-VALUE )
@@ -143,9 +126,9 @@ class Objectclass
 
 	@@classes = Array.new
 
-	def <=>(other)
-		self.name <=> other.name
-	end
+    def self.each
+        @@classes.each do |obj| yield obj end
+    end
 
 	def Objectclass.to_s
 		#@@classes.sort!
@@ -154,11 +137,18 @@ class Objectclass
 		}
 	end
 
-	def initialize(oc,ary)
+	def <=>(other)
+		self.name <=> other.name
+	end
+
+	def initialize(type)
 		@@classes.push self
 		@oid = Oid.next
-		@name = oc
-		@params = ary.collect { |param| "nagios_" + param.id2name }
+		@name = type.name.to_s
+		@params = type.parameters.collect { |param|
+            Attribute.new(param.to_s)
+            "nagios_" + param.to_s
+        }
 	end
 
 	def to_s
@@ -168,41 +158,15 @@ class Objectclass
 	end
 end
 
-# create them from nagios.rb
-#Nagios::Object.derivatives.each{ |object,klass|
-#	Objectclass.new(object,klass.params)
-#	klass.params.each { |param|
-#		Attribute.create(param)
-#	}
-#}
+Nagios::Base.eachtype do |name, type|
+    klass = Objectclass.new(type)
+end
 
-# create the objects from the C files
-files = %w{
-	/sfw/build/nagios/1.1/xdata/xedtemplate.h
-	/sfw/build/nagios/1.1/xdata/xodtemplate.h
-}
+puts Attribute.to_s
+puts Objectclass.to_s
 
-files.each { |name|
-	File.open(name) { |file|
-		contents = file.collect { |line|
-			line
-		}.join()
+#Objectclass.each do |obj|
+#    puts obj.to_s
+#end
 
-		contents.sub!(/typedef struct (\S+)_struct\{([^\}]+)\}/,'')
-		#contents.sub!(/typedef struct \S+\{([^\}]+)\}/,'')
-		if $1 and $2
-		#if $1
-			name = $1
-			body = $2
-			body.sub!(/\s+struct .*\n/,'')
-			puts name, body
-			#puts name
-		else
-			puts "nothing"
-		end
-	}
-}
-
-#puts Attribute.to_s
-#print "\n"
-#puts Objectclass.to_s
+# $Id: mkschema,v 1.1 2004/03/04 03:18:49 luke Exp $

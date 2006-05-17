@@ -9,7 +9,7 @@ class Nagios::Base
 
     class << self
         attr_accessor :parameters, :derivatives, :ocs, :name, :att
-        attr_accessor :auxiliary
+        attr_accessor :auxiliary, :ldapbase
 
         attr_writer :namevar
     end
@@ -216,7 +216,7 @@ class Nagios::Base
     # okay, this sucks
     # how do i get my list of ocs?
     def to_ldif
-        base = "dc=madstop,dc=com"
+        base = self.class.ldapbase
         str = self.dn + "\n"
         ocs = Array.new
         if self.class.ocs

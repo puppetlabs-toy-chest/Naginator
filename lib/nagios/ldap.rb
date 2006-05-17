@@ -1,14 +1,8 @@
-#!/usr/local/bin/ruby -w
-
-#--------------------
-# convert ldap entries to nagios objects
-#
-# $Id: ldap.rb,v 1.1 2004/06/09 20:32:46 luke Exp $
-
 require 'digest/md5'
 require 'nagios/object.rb'
 require 'ldap'
 
+# Convert ldap entries to nagios objects
 module LDAP
 	class Entry
 		@oc2object = {
@@ -79,3 +73,5 @@ module Nagios
 		}
 	end
 end
+
+# $Id: ldap.rb,v 1.1 2004/06/09 20:32:46 luke Exp $
