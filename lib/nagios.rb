@@ -9,22 +9,19 @@
 require 'digest/md5'
 #require 'ldap'
 require 'nagios/parser.rb'
-require 'nagios/object.rb'
-
-# yay colors
-PINK = "[0;31m"
-GREEN = "[0;32m"
-YELLOW = "[0;33m"
-SLATE = "[0;34m"
-ORANGE = "[0;35m"
-BLUE = "[0;36m"
-NOCOLOR = "[0m"
-RESET = "[0m"
+require 'nagios/base.rb'
 
 module Nagios
-	#------------------------------------------------------------
-	#
-	#------------------------------------------------------------
+    # yay colors
+    PINK = "[0;31m"
+    GREEN = "[0;32m"
+    YELLOW = "[0;33m"
+    SLATE = "[0;34m"
+    ORANGE = "[0;35m"
+    BLUE = "[0;36m"
+    NOCOLOR = "[0m"
+    RESET = "[0m"
+
 	class Config
 		def Config.import(config)
 
