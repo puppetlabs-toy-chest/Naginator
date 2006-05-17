@@ -1,0 +1,416 @@
+attributetype ( 1.1.1.1.85 NAME 'nagios_2d_coords'
+	DESC 'Nagios Attribute 2d_coords'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.86 NAME 'nagios_3d_coords'
+	DESC 'Nagios Attribute 3d_coords'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.53 NAME 'nagios_active_checks_enabled'
+	DESC 'Nagios Attribute active_checks_enabled'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.31 NAME 'nagios_address'
+	DESC 'Nagios Attribute address'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.111 NAME 'nagios_alias'
+	DESC 'Nagios Attribute alias'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.77 NAME 'nagios_check_command'
+	DESC 'Nagios Attribute check_command'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.57 NAME 'nagios_check_freshness'
+	DESC 'Nagios Attribute check_freshness'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.66 NAME 'nagios_check_period'
+	DESC 'Nagios Attribute check_period'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.37 NAME 'nagios_checks_enabled'
+	DESC 'Nagios Attribute checks_enabled'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.43 NAME 'nagios_command_line'
+	DESC 'Nagios Attribute command_line'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.42 NAME 'nagios_command_name'
+	DESC 'Nagios Attribute command_name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.93 NAME 'nagios_contact_groups'
+	DESC 'Nagios Attribute contact_groups'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.110 NAME 'nagios_contact_name'
+	DESC 'Nagios Attribute contact_name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.105 NAME 'nagios_contactgroup_name'
+	DESC 'Nagios Attribute contactgroup_name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.99 NAME 'nagios_dependent_host_name'
+	DESC 'Nagios Attribute dependent_host_name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.100 NAME 'nagios_dependent_service_description'
+	DESC 'Nagios Attribute dependent_service_description'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.116 NAME 'nagios_email'
+	DESC 'Nagios Attribute email'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.59 NAME 'nagios_event_handler_enabled'
+	DESC 'Nagios Attribute event_handler_enabled'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.101 NAME 'nagios_execution_failure_criteria'
+	DESC 'Nagios Attribute execution_failure_criteria'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.38 NAME 'nagios_failure_prediction_enabled'
+	DESC 'Nagios Attribute failure_prediction_enabled'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.91 NAME 'nagios_first_notification'
+	DESC 'Nagios Attribute first_notification'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.60 NAME 'nagios_flap_detection_enabled'
+	DESC 'Nagios Attribute flap_detection_enabled'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.76 NAME 'nagios_freshness_threshold'
+	DESC 'Nagios Attribute freshness_threshold'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.10 NAME 'nagios_friday'
+	DESC 'Nagios Attribute friday'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.122 NAME 'nagios_host_name'
+	DESC 'Nagios Attribute host_name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.113 NAME 'nagios_host_notification_commands'
+	DESC 'Nagios Attribute host_notification_commands'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.119 NAME 'nagios_host_notification_options'
+	DESC 'Nagios Attribute host_notification_options'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.112 NAME 'nagios_host_notification_period'
+	DESC 'Nagios Attribute host_notification_period'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.46 NAME 'nagios_hostgroup_name'
+	DESC 'Nagios Attribute hostgroup_name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.124 NAME 'nagios_icon_image'
+	DESC 'Nagios Attribute icon_image'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.125 NAME 'nagios_icon_image_alt'
+	DESC 'Nagios Attribute icon_image_alt'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.65 NAME 'nagios_is_volatile'
+	DESC 'Nagios Attribute is_volatile'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.92 NAME 'nagios_last_notification'
+	DESC 'Nagios Attribute last_notification'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.67 NAME 'nagios_max_check_attempts'
+	DESC 'Nagios Attribute max_check_attempts'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.107 NAME 'nagios_members'
+	DESC 'Nagios Attribute members'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.6 NAME 'nagios_monday'
+	DESC 'Nagios Attribute monday'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.52 NAME 'nagios_name'
+	DESC 'Nagios Attribute name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.68 NAME 'nagios_normal_check_interval'
+	DESC 'Nagios Attribute normal_check_interval'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.81 NAME 'nagios_notes_url'
+	DESC 'Nagios Attribute notes_url'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.102 NAME 'nagios_notification_failure_criteria'
+	DESC 'Nagios Attribute notification_failure_criteria'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.94 NAME 'nagios_notification_interval'
+	DESC 'Nagios Attribute notification_interval'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.73 NAME 'nagios_notification_options'
+	DESC 'Nagios Attribute notification_options'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.72 NAME 'nagios_notification_period'
+	DESC 'Nagios Attribute notification_period'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.58 NAME 'nagios_notifications_enabled'
+	DESC 'Nagios Attribute notifications_enabled'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.56 NAME 'nagios_obsess_over_service'
+	DESC 'Nagios Attribute obsess_over_service'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.117 NAME 'nagios_pager'
+	DESC 'Nagios Attribute pager'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.55 NAME 'nagios_parallelize_check'
+	DESC 'Nagios Attribute parallelize_check'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.39 NAME 'nagios_parents'
+	DESC 'Nagios Attribute parents'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.54 NAME 'nagios_passive_checks_enabled'
+	DESC 'Nagios Attribute passive_checks_enabled'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.61 NAME 'nagios_process_perf_data'
+	DESC 'Nagios Attribute process_perf_data'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.64 NAME 'nagios_register'
+	DESC 'Nagios Attribute register'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.63 NAME 'nagios_retain_nonstatus_information'
+	DESC 'Nagios Attribute retain_nonstatus_information'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.62 NAME 'nagios_retain_status_information'
+	DESC 'Nagios Attribute retain_status_information'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.69 NAME 'nagios_retry_check_interval'
+	DESC 'Nagios Attribute retry_check_interval'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.11 NAME 'nagios_saturday'
+	DESC 'Nagios Attribute saturday'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.123 NAME 'nagios_service_description'
+	DESC 'Nagios Attribute service_description'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.115 NAME 'nagios_service_notification_commands'
+	DESC 'Nagios Attribute service_notification_commands'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.118 NAME 'nagios_service_notification_options'
+	DESC 'Nagios Attribute service_notification_options'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.114 NAME 'nagios_service_notification_period'
+	DESC 'Nagios Attribute service_notification_period'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.5 NAME 'nagios_sunday'
+	DESC 'Nagios Attribute sunday'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.9 NAME 'nagios_thursday'
+	DESC 'Nagios Attribute thursday'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.3 NAME 'nagios_timeperiod_name'
+	DESC 'Nagios Attribute timeperiod_name'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.7 NAME 'nagios_tuesday'
+	DESC 'Nagios Attribute tuesday'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.121 NAME 'nagios_use'
+	DESC 'Nagios Attribute use'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.84 NAME 'nagios_vrml_image'
+	DESC 'Nagios Attribute vrml_image'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+attributetype ( 1.1.1.1.8 NAME 'nagios_wednesday'
+	DESC 'Nagios Attribute wednesday'
+	EQUALITY 
+	SYNTAX  SINGLE-VALUE )
+
+objectclass ( 1.1.1.1.40 NAME 'nagios_command' SUP top AUXILIARY
+	DESC 'Nagios Class command'
+	MAY (  nagios_command_line $ nagios_command_name $ nagios_use ) )
+
+objectclass ( 1.1.1.1.108 NAME 'nagios_contact' SUP top AUXILIARY
+	DESC 'Nagios Class contact'
+	MAY (  nagios_alias $ nagios_contact_name $ nagios_email $
+		nagios_host_notification_commands $ nagios_host_notification_options $
+		nagios_host_notification_period $ nagios_pager $
+		nagios_service_notification_commands $
+		nagios_service_notification_options $
+		nagios_service_notification_period $ nagios_use ) )
+
+objectclass ( 1.1.1.1.103 NAME 'nagios_contactgroup' SUP top AUXILIARY
+	DESC 'Nagios Class contactgroup'
+	MAY (  nagios_alias $ nagios_contactgroup_name $ nagios_members $ nagios_use
+		) )
+
+objectclass ( 1.1.1.1.19 NAME 'nagios_host' SUP top AUXILIARY
+	DESC 'Nagios Class host'
+	MAY (  nagios_address $ nagios_alias $ nagios_check_command $
+		nagios_checks_enabled $ nagios_event_handler_enabled $
+		nagios_failure_prediction_enabled $ nagios_flap_detection_enabled $
+		nagios_host_name $ nagios_max_check_attempts $
+		nagios_notification_interval $ nagios_notification_options $
+		nagios_notification_period $ nagios_notifications_enabled $
+		nagios_parents $ nagios_process_perf_data $ nagios_register $
+		nagios_retain_nonstatus_information $ nagios_retain_status_information
+		$ nagios_use $ nagios_use ) )
+
+objectclass ( 1.1.1.1.78 NAME 'nagios_hostextinfo' SUP top AUXILIARY
+	DESC 'Nagios Class hostextinfo'
+	MAY (  nagios_2d_coords $ nagios_3d_coords $ nagios_host_name $
+		nagios_icon_image $ nagios_icon_image_alt $ nagios_notes_url $
+		nagios_use $ nagios_vrml_image ) )
+
+objectclass ( 1.1.1.1.44 NAME 'nagios_hostgroup' SUP top AUXILIARY
+	DESC 'Nagios Class hostgroup'
+	MAY (  nagios_alias $ nagios_contact_groups $ nagios_hostgroup_name $
+		nagios_members $ nagios_use ) )
+
+objectclass ( 1.1.1.1.12 NAME 'nagios_hostgroupescalation' SUP top AUXILIARY
+	DESC 'Nagios Class hostgroupescalation'
+	MAY (  nagios_contact_groups $ nagios_first_notification $
+		nagios_hostgroup_name $ nagios_last_notification $
+		nagios_notification_interval $ nagios_use ) )
+
+objectclass ( 1.1.1.1.50 NAME 'nagios_service' SUP top AUXILIARY
+	DESC 'Nagios Class service'
+	MAY (  nagios_active_checks_enabled $ nagios_check_command $
+		nagios_check_freshness $ nagios_check_period $ nagios_contact_groups $
+		nagios_event_handler_enabled $ nagios_flap_detection_enabled $
+		nagios_freshness_threshold $ nagios_host_name $ nagios_is_volatile $
+		nagios_max_check_attempts $ nagios_name $ nagios_normal_check_interval
+		$ nagios_notification_interval $ nagios_notification_options $
+		nagios_notification_period $ nagios_notifications_enabled $
+		nagios_obsess_over_service $ nagios_parallelize_check $
+		nagios_passive_checks_enabled $ nagios_process_perf_data $
+		nagios_register $ nagios_retain_nonstatus_information $
+		nagios_retain_status_information $ nagios_retry_check_interval $
+		nagios_service_description $ nagios_use ) )
+
+objectclass ( 1.1.1.1.95 NAME 'nagios_servicedependency' SUP top AUXILIARY
+	DESC 'Nagios Class servicedependency'
+	MAY (  nagios_dependent_host_name $ nagios_dependent_service_description $
+		nagios_execution_failure_criteria $ nagios_host_name $
+		nagios_notification_failure_criteria $ nagios_service_description $
+		nagios_use ) )
+
+objectclass ( 1.1.1.1.87 NAME 'nagios_serviceescalation' SUP top AUXILIARY
+	DESC 'Nagios Class serviceescalation'
+	MAY (  nagios_contact_groups $ nagios_first_notification $ nagios_host_name $
+		nagios_last_notification $ nagios_notification_interval $
+		nagios_service_description $ nagios_use ) )
+
+objectclass ( 1.1.1.1.120 NAME 'nagios_serviceextinfo' SUP top AUXILIARY
+	DESC 'Nagios Class serviceextinfo'
+	MAY (  nagios_host_name $ nagios_icon_image $ nagios_icon_image_alt $
+		nagios_service_description $ nagios_use ) )
+
+objectclass ( 1.1.1.1.1 NAME 'nagios_timeperiod' SUP top AUXILIARY
+	DESC 'Nagios Class timeperiod'
+	MAY (  nagios_alias $ nagios_friday $ nagios_monday $ nagios_saturday $
+		nagios_sunday $ nagios_thursday $ nagios_timeperiod_name $
+		nagios_tuesday $ nagios_use $ nagios_wednesday ) )
+
