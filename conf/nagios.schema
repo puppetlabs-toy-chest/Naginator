@@ -1,416 +1,410 @@
-attributetype ( 1.1.1.1.85 NAME 'nagios_2d_coords'
+attributetype ( 1.1.1.1.82 NAME 'nagios2dCoords'
 	DESC 'Nagios Attribute 2d_coords'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.86 NAME 'nagios_3d_coords'
+attributetype ( 1.1.1.1.83 NAME 'nagios3dCoords'
 	DESC 'Nagios Attribute 3d_coords'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.53 NAME 'nagios_active_checks_enabled'
+attributetype ( 1.1.1.1.93 NAME 'nagiosActiveChecksEnabled'
 	DESC 'Nagios Attribute active_checks_enabled'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.31 NAME 'nagios_address'
+attributetype ( 1.1.1.1.62 NAME 'nagiosAddress'
 	DESC 'Nagios Attribute address'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.111 NAME 'nagios_alias'
+attributetype ( 1.1.1.1.87 NAME 'nagiosAlias'
 	DESC 'Nagios Attribute alias'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.77 NAME 'nagios_check_command'
+attributetype ( 1.1.1.1.117 NAME 'nagiosCheckCommand'
 	DESC 'Nagios Attribute check_command'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.57 NAME 'nagios_check_freshness'
+attributetype ( 1.1.1.1.97 NAME 'nagiosCheckFreshness'
 	DESC 'Nagios Attribute check_freshness'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.66 NAME 'nagios_check_period'
+attributetype ( 1.1.1.1.106 NAME 'nagiosCheckPeriod'
 	DESC 'Nagios Attribute check_period'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.37 NAME 'nagios_checks_enabled'
+attributetype ( 1.1.1.1.68 NAME 'nagiosChecksEnabled'
 	DESC 'Nagios Attribute checks_enabled'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.43 NAME 'nagios_command_line'
+attributetype ( 1.1.1.1.74 NAME 'nagiosCommandLine'
 	DESC 'Nagios Attribute command_line'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.42 NAME 'nagios_command_name'
+attributetype ( 1.1.1.1.73 NAME 'nagiosCommandName'
 	DESC 'Nagios Attribute command_name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.93 NAME 'nagios_contact_groups'
+attributetype ( 1.1.1.1.124 NAME 'nagiosContactGroups'
 	DESC 'Nagios Attribute contact_groups'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.110 NAME 'nagios_contact_name'
+attributetype ( 1.1.1.1.16 NAME 'nagiosContactName'
 	DESC 'Nagios Attribute contact_name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.105 NAME 'nagios_contactgroup_name'
+attributetype ( 1.1.1.1.11 NAME 'nagiosContactgroupName'
 	DESC 'Nagios Attribute contactgroup_name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.99 NAME 'nagios_dependent_host_name'
+attributetype ( 1.1.1.1.5 NAME 'nagiosDependentHostName'
 	DESC 'Nagios Attribute dependent_host_name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.100 NAME 'nagios_dependent_service_description'
+attributetype ( 1.1.1.1.6 NAME 'nagiosDependentServiceDescription'
 	DESC 'Nagios Attribute dependent_service_description'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.116 NAME 'nagios_email'
+attributetype ( 1.1.1.1.22 NAME 'nagiosEmail'
 	DESC 'Nagios Attribute email'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.59 NAME 'nagios_event_handler_enabled'
+attributetype ( 1.1.1.1.99 NAME 'nagiosEventHandlerEnabled'
 	DESC 'Nagios Attribute event_handler_enabled'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.101 NAME 'nagios_execution_failure_criteria'
+attributetype ( 1.1.1.1.7 NAME 'nagiosExecutionFailureCriteria'
 	DESC 'Nagios Attribute execution_failure_criteria'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.38 NAME 'nagios_failure_prediction_enabled'
+attributetype ( 1.1.1.1.69 NAME 'nagiosFailurePredictionEnabled'
 	DESC 'Nagios Attribute failure_prediction_enabled'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.91 NAME 'nagios_first_notification'
+attributetype ( 1.1.1.1.122 NAME 'nagiosFirstNotification'
 	DESC 'Nagios Attribute first_notification'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.60 NAME 'nagios_flap_detection_enabled'
+attributetype ( 1.1.1.1.100 NAME 'nagiosFlapDetectionEnabled'
 	DESC 'Nagios Attribute flap_detection_enabled'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.76 NAME 'nagios_freshness_threshold'
+attributetype ( 1.1.1.1.116 NAME 'nagiosFreshnessThreshold'
 	DESC 'Nagios Attribute freshness_threshold'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.10 NAME 'nagios_friday'
+attributetype ( 1.1.1.1.41 NAME 'nagiosFriday'
 	DESC 'Nagios Attribute friday'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.122 NAME 'nagios_host_name'
+attributetype ( 1.1.1.1.120 NAME 'nagiosHostName'
 	DESC 'Nagios Attribute host_name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.113 NAME 'nagios_host_notification_commands'
+attributetype ( 1.1.1.1.19 NAME 'nagiosHostNotificationCommands'
 	DESC 'Nagios Attribute host_notification_commands'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.119 NAME 'nagios_host_notification_options'
+attributetype ( 1.1.1.1.25 NAME 'nagiosHostNotificationOptions'
 	DESC 'Nagios Attribute host_notification_options'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.112 NAME 'nagios_host_notification_period'
+attributetype ( 1.1.1.1.18 NAME 'nagiosHostNotificationPeriod'
 	DESC 'Nagios Attribute host_notification_period'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.46 NAME 'nagios_hostgroup_name'
+attributetype ( 1.1.1.1.86 NAME 'nagiosHostgroupName'
 	DESC 'Nagios Attribute hostgroup_name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.124 NAME 'nagios_icon_image'
+attributetype ( 1.1.1.1.79 NAME 'nagiosIconImage'
 	DESC 'Nagios Attribute icon_image'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.125 NAME 'nagios_icon_image_alt'
+attributetype ( 1.1.1.1.80 NAME 'nagiosIconImageAlt'
 	DESC 'Nagios Attribute icon_image_alt'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.65 NAME 'nagios_is_volatile'
+attributetype ( 1.1.1.1.105 NAME 'nagiosIsVolatile'
 	DESC 'Nagios Attribute is_volatile'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.92 NAME 'nagios_last_notification'
+attributetype ( 1.1.1.1.123 NAME 'nagiosLastNotification'
 	DESC 'Nagios Attribute last_notification'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.67 NAME 'nagios_max_check_attempts'
+attributetype ( 1.1.1.1.107 NAME 'nagiosMaxCheckAttempts'
 	DESC 'Nagios Attribute max_check_attempts'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.107 NAME 'nagios_members'
+attributetype ( 1.1.1.1.89 NAME 'nagiosMembers'
 	DESC 'Nagios Attribute members'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.6 NAME 'nagios_monday'
+attributetype ( 1.1.1.1.37 NAME 'nagiosMonday'
 	DESC 'Nagios Attribute monday'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.52 NAME 'nagios_name'
+attributetype ( 1.1.1.1.92 NAME 'nagiosName'
 	DESC 'Nagios Attribute name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.68 NAME 'nagios_normal_check_interval'
+attributetype ( 1.1.1.1.108 NAME 'nagiosNormalCheckInterval'
 	DESC 'Nagios Attribute normal_check_interval'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.81 NAME 'nagios_notes_url'
+attributetype ( 1.1.1.1.78 NAME 'nagiosNotesUrl'
 	DESC 'Nagios Attribute notes_url'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.102 NAME 'nagios_notification_failure_criteria'
+attributetype ( 1.1.1.1.8 NAME 'nagiosNotificationFailureCriteria'
 	DESC 'Nagios Attribute notification_failure_criteria'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.94 NAME 'nagios_notification_interval'
+attributetype ( 1.1.1.1.125 NAME 'nagiosNotificationInterval'
 	DESC 'Nagios Attribute notification_interval'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.73 NAME 'nagios_notification_options'
+attributetype ( 1.1.1.1.113 NAME 'nagiosNotificationOptions'
 	DESC 'Nagios Attribute notification_options'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.72 NAME 'nagios_notification_period'
+attributetype ( 1.1.1.1.112 NAME 'nagiosNotificationPeriod'
 	DESC 'Nagios Attribute notification_period'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.58 NAME 'nagios_notifications_enabled'
+attributetype ( 1.1.1.1.98 NAME 'nagiosNotificationsEnabled'
 	DESC 'Nagios Attribute notifications_enabled'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.56 NAME 'nagios_obsess_over_service'
+attributetype ( 1.1.1.1.96 NAME 'nagiosObsessOverService'
 	DESC 'Nagios Attribute obsess_over_service'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.117 NAME 'nagios_pager'
+attributetype ( 1.1.1.1.23 NAME 'nagiosPager'
 	DESC 'Nagios Attribute pager'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.55 NAME 'nagios_parallelize_check'
+attributetype ( 1.1.1.1.95 NAME 'nagiosParallelizeCheck'
 	DESC 'Nagios Attribute parallelize_check'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.39 NAME 'nagios_parents'
+attributetype ( 1.1.1.1.70 NAME 'nagiosParents'
 	DESC 'Nagios Attribute parents'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.54 NAME 'nagios_passive_checks_enabled'
+attributetype ( 1.1.1.1.94 NAME 'nagiosPassiveChecksEnabled'
 	DESC 'Nagios Attribute passive_checks_enabled'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.61 NAME 'nagios_process_perf_data'
+attributetype ( 1.1.1.1.101 NAME 'nagiosProcessPerfData'
 	DESC 'Nagios Attribute process_perf_data'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.64 NAME 'nagios_register'
+attributetype ( 1.1.1.1.104 NAME 'nagiosRegister'
 	DESC 'Nagios Attribute register'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.63 NAME 'nagios_retain_nonstatus_information'
+attributetype ( 1.1.1.1.103 NAME 'nagiosRetainNonstatusInformation'
 	DESC 'Nagios Attribute retain_nonstatus_information'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.62 NAME 'nagios_retain_status_information'
+attributetype ( 1.1.1.1.102 NAME 'nagiosRetainStatusInformation'
 	DESC 'Nagios Attribute retain_status_information'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.69 NAME 'nagios_retry_check_interval'
+attributetype ( 1.1.1.1.109 NAME 'nagiosRetryCheckInterval'
 	DESC 'Nagios Attribute retry_check_interval'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.11 NAME 'nagios_saturday'
+attributetype ( 1.1.1.1.42 NAME 'nagiosSaturday'
 	DESC 'Nagios Attribute saturday'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.123 NAME 'nagios_service_description'
+attributetype ( 1.1.1.1.121 NAME 'nagiosServiceDescription'
 	DESC 'Nagios Attribute service_description'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.115 NAME 'nagios_service_notification_commands'
+attributetype ( 1.1.1.1.21 NAME 'nagiosServiceNotificationCommands'
 	DESC 'Nagios Attribute service_notification_commands'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.118 NAME 'nagios_service_notification_options'
+attributetype ( 1.1.1.1.24 NAME 'nagiosServiceNotificationOptions'
 	DESC 'Nagios Attribute service_notification_options'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.114 NAME 'nagios_service_notification_period'
+attributetype ( 1.1.1.1.20 NAME 'nagiosServiceNotificationPeriod'
 	DESC 'Nagios Attribute service_notification_period'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.5 NAME 'nagios_sunday'
+attributetype ( 1.1.1.1.36 NAME 'nagiosSunday'
 	DESC 'Nagios Attribute sunday'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.9 NAME 'nagios_thursday'
+attributetype ( 1.1.1.1.40 NAME 'nagiosThursday'
 	DESC 'Nagios Attribute thursday'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.3 NAME 'nagios_timeperiod_name'
+attributetype ( 1.1.1.1.34 NAME 'nagiosTimeperiodName'
 	DESC 'Nagios Attribute timeperiod_name'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.7 NAME 'nagios_tuesday'
+attributetype ( 1.1.1.1.38 NAME 'nagiosTuesday'
 	DESC 'Nagios Attribute tuesday'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.121 NAME 'nagios_use'
+attributetype ( 1.1.1.1.119 NAME 'nagiosUse'
 	DESC 'Nagios Attribute use'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.84 NAME 'nagios_vrml_image'
+attributetype ( 1.1.1.1.81 NAME 'nagiosVrmlImage'
 	DESC 'Nagios Attribute vrml_image'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-attributetype ( 1.1.1.1.8 NAME 'nagios_wednesday'
+attributetype ( 1.1.1.1.39 NAME 'nagiosWednesday'
 	DESC 'Nagios Attribute wednesday'
-	EQUALITY 
-	SYNTAX  SINGLE-VALUE )
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 
-objectclass ( 1.1.1.1.40 NAME 'nagios_command' SUP top AUXILIARY
+objectclass ( 1.1.1.1.71 NAME 'nagiosCommand' SUP top 
 	DESC 'Nagios Class command'
-	MAY (  nagios_command_line $ nagios_command_name $ nagios_use ) )
+	MAY (  nagiosCommandLine $ nagiosCommandName $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.108 NAME 'nagios_contact' SUP top AUXILIARY
+objectclass ( 1.1.1.1.14 NAME 'nagiosContact' SUP top AUXILIARY
 	DESC 'Nagios Class contact'
-	MAY (  nagios_alias $ nagios_contact_name $ nagios_email $
-		nagios_host_notification_commands $ nagios_host_notification_options $
-		nagios_host_notification_period $ nagios_pager $
-		nagios_service_notification_commands $
-		nagios_service_notification_options $
-		nagios_service_notification_period $ nagios_use ) )
+	MAY (  nagiosAlias $ nagiosContactName $ nagiosEmail $
+		nagiosHostNotificationCommands $ nagiosHostNotificationOptions $
+		nagiosHostNotificationPeriod $ nagiosPager $
+		nagiosServiceNotificationCommands $ nagiosServiceNotificationOptions $
+		nagiosServiceNotificationPeriod $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.103 NAME 'nagios_contactgroup' SUP top AUXILIARY
+objectclass ( 1.1.1.1.9 NAME 'nagiosContactgroup' SUP top 
 	DESC 'Nagios Class contactgroup'
-	MAY (  nagios_alias $ nagios_contactgroup_name $ nagios_members $ nagios_use
-		) )
+	MAY (  nagiosAlias $ nagiosContactgroupName $ nagiosMembers $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.19 NAME 'nagios_host' SUP top AUXILIARY
+objectclass ( 1.1.1.1.50 NAME 'nagiosHost' SUP top AUXILIARY
 	DESC 'Nagios Class host'
-	MAY (  nagios_address $ nagios_alias $ nagios_check_command $
-		nagios_checks_enabled $ nagios_event_handler_enabled $
-		nagios_failure_prediction_enabled $ nagios_flap_detection_enabled $
-		nagios_host_name $ nagios_max_check_attempts $
-		nagios_notification_interval $ nagios_notification_options $
-		nagios_notification_period $ nagios_notifications_enabled $
-		nagios_parents $ nagios_process_perf_data $ nagios_register $
-		nagios_retain_nonstatus_information $ nagios_retain_status_information
-		$ nagios_use $ nagios_use ) )
+	MAY (  ipHostNumber $ nagiosAlias $ nagiosCheckCommand $ nagiosChecksEnabled
+		$ nagiosEventHandlerEnabled $ nagiosFailurePredictionEnabled $
+		nagiosFlapDetectionEnabled $ nagiosHostName $ nagiosMaxCheckAttempts $
+		nagiosNotificationInterval $ nagiosNotificationOptions $
+		nagiosNotificationPeriod $ nagiosNotificationsEnabled $ nagiosParents $
+		nagiosProcessPerfData $ nagiosRegister $
+		nagiosRetainNonstatusInformation $ nagiosRetainStatusInformation $
+		nagiosUse $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.78 NAME 'nagios_hostextinfo' SUP top AUXILIARY
+objectclass ( 1.1.1.1.75 NAME 'nagiosHostextinfo' SUP top 
 	DESC 'Nagios Class hostextinfo'
-	MAY (  nagios_2d_coords $ nagios_3d_coords $ nagios_host_name $
-		nagios_icon_image $ nagios_icon_image_alt $ nagios_notes_url $
-		nagios_use $ nagios_vrml_image ) )
+	MAY (  nagios2dCoords $ nagios3dCoords $ nagiosHostName $ nagiosIconImage $
+		nagiosIconImageAlt $ nagiosNotesUrl $ nagiosUse $ nagiosVrmlImage ) )
 
-objectclass ( 1.1.1.1.44 NAME 'nagios_hostgroup' SUP top AUXILIARY
+objectclass ( 1.1.1.1.84 NAME 'nagiosHostgroup' SUP top 
 	DESC 'Nagios Class hostgroup'
-	MAY (  nagios_alias $ nagios_contact_groups $ nagios_hostgroup_name $
-		nagios_members $ nagios_use ) )
+	MAY (  nagiosAlias $ nagiosContactGroups $ nagiosHostgroupName $
+		nagiosMembers $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.12 NAME 'nagios_hostgroupescalation' SUP top AUXILIARY
+objectclass ( 1.1.1.1.43 NAME 'nagiosHostgroupescalation' SUP top 
 	DESC 'Nagios Class hostgroupescalation'
-	MAY (  nagios_contact_groups $ nagios_first_notification $
-		nagios_hostgroup_name $ nagios_last_notification $
-		nagios_notification_interval $ nagios_use ) )
+	MAY (  nagiosContactGroups $ nagiosFirstNotification $ nagiosHostgroupName $
+		nagiosLastNotification $ nagiosNotificationInterval $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.50 NAME 'nagios_service' SUP top AUXILIARY
+objectclass ( 1.1.1.1.90 NAME 'nagiosService' SUP top 
 	DESC 'Nagios Class service'
-	MAY (  nagios_active_checks_enabled $ nagios_check_command $
-		nagios_check_freshness $ nagios_check_period $ nagios_contact_groups $
-		nagios_event_handler_enabled $ nagios_flap_detection_enabled $
-		nagios_freshness_threshold $ nagios_host_name $ nagios_is_volatile $
-		nagios_max_check_attempts $ nagios_name $ nagios_normal_check_interval
-		$ nagios_notification_interval $ nagios_notification_options $
-		nagios_notification_period $ nagios_notifications_enabled $
-		nagios_obsess_over_service $ nagios_parallelize_check $
-		nagios_passive_checks_enabled $ nagios_process_perf_data $
-		nagios_register $ nagios_retain_nonstatus_information $
-		nagios_retain_status_information $ nagios_retry_check_interval $
-		nagios_service_description $ nagios_use ) )
+	MAY (  nagiosActiveChecksEnabled $ nagiosCheckCommand $ nagiosCheckFreshness
+		$ nagiosCheckPeriod $ nagiosContactGroups $ nagiosEventHandlerEnabled $
+		nagiosFlapDetectionEnabled $ nagiosFreshnessThreshold $ nagiosHostName
+		$ nagiosIsVolatile $ nagiosMaxCheckAttempts $ nagiosName $
+		nagiosNormalCheckInterval $ nagiosNotificationInterval $
+		nagiosNotificationOptions $ nagiosNotificationPeriod $
+		nagiosNotificationsEnabled $ nagiosObsessOverService $
+		nagiosParallelizeCheck $ nagiosPassiveChecksEnabled $
+		nagiosProcessPerfData $ nagiosRegister $
+		nagiosRetainNonstatusInformation $ nagiosRetainStatusInformation $
+		nagiosRetryCheckInterval $ nagiosServiceDescription $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.95 NAME 'nagios_servicedependency' SUP top AUXILIARY
+objectclass ( 1.1.1.1.1 NAME 'nagiosServicedependency' SUP top 
 	DESC 'Nagios Class servicedependency'
-	MAY (  nagios_dependent_host_name $ nagios_dependent_service_description $
-		nagios_execution_failure_criteria $ nagios_host_name $
-		nagios_notification_failure_criteria $ nagios_service_description $
-		nagios_use ) )
+	MAY (  nagiosDependentHostName $ nagiosDependentServiceDescription $
+		nagiosExecutionFailureCriteria $ nagiosHostName $
+		nagiosNotificationFailureCriteria $ nagiosServiceDescription $
+		nagiosUse ) )
 
-objectclass ( 1.1.1.1.87 NAME 'nagios_serviceescalation' SUP top AUXILIARY
+objectclass ( 1.1.1.1.118 NAME 'nagiosServiceescalation' SUP top 
 	DESC 'Nagios Class serviceescalation'
-	MAY (  nagios_contact_groups $ nagios_first_notification $ nagios_host_name $
-		nagios_last_notification $ nagios_notification_interval $
-		nagios_service_description $ nagios_use ) )
+	MAY (  nagiosContactGroups $ nagiosFirstNotification $ nagiosHostName $
+		nagiosLastNotification $ nagiosNotificationInterval $
+		nagiosServiceDescription $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.120 NAME 'nagios_serviceextinfo' SUP top AUXILIARY
+objectclass ( 1.1.1.1.26 NAME 'nagiosServiceextinfo' SUP top 
 	DESC 'Nagios Class serviceextinfo'
-	MAY (  nagios_host_name $ nagios_icon_image $ nagios_icon_image_alt $
-		nagios_service_description $ nagios_use ) )
+	MAY (  nagiosHostName $ nagiosIconImage $ nagiosIconImageAlt $
+		nagiosServiceDescription $ nagiosUse ) )
 
-objectclass ( 1.1.1.1.1 NAME 'nagios_timeperiod' SUP top AUXILIARY
+objectclass ( 1.1.1.1.32 NAME 'nagiosTimeperiod' SUP top 
 	DESC 'Nagios Class timeperiod'
-	MAY (  nagios_alias $ nagios_friday $ nagios_monday $ nagios_saturday $
-		nagios_sunday $ nagios_thursday $ nagios_timeperiod_name $
-		nagios_tuesday $ nagios_use $ nagios_wednesday ) )
+	MAY (  nagiosAlias $ nagiosFriday $ nagiosMonday $ nagiosSaturday $
+		nagiosSunday $ nagiosThursday $ nagiosTimeperiodName $ nagiosTuesday $
+		nagiosUse $ nagiosWednesday ) )
 

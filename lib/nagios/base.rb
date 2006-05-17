@@ -9,15 +9,31 @@ class Nagios::Base
 
     class << self
         attr_accessor :parameters, :derivatives, :ocs, :name, :att
-        attr_accessor :auxiliary, :ldapbase
+        attr_accessor :ldapbase
 
         attr_writer :namevar
+
+        attr_reader :superior
     end
 
     # Attach one class to another.
     def self.attach(hash)
         @attach ||= {}
         hash.each do |n, v| @attach[n] = v end
+    end
+
+    # Convert a parameter to camelcase
+    def self.camelcase(param)
+        param.gsub(/_./) do |match|
+            match.sub(/_/,'').capitalize
+        end
+    end
+
+    # Uncamelcase a parameter.
+    def self.decamelcase(param)
+        param.gsub(/[A-Z]/) do |match|
+            "_" + match.downcase
+        end
     end
 
     # Create a new instance of a given class.
@@ -42,6 +58,16 @@ class Nagios::Base
     def self.map(hash)
         @map ||= {}
         hash.each do |n, v| @map[n] = v end
+    end
+
+    # Return a mapping (or nil) for a param
+    def self.mapping(name)
+        name = name.intern if name.is_a? String
+        if defined? @map
+            @map[name]
+        else
+            nil
+        end
     end
 
     # Return the namevar for the canonical name.
@@ -100,6 +126,12 @@ class Nagios::Base
         @parameters += array
     end
 
+    # Set the superior ldap object class.  Seems silly to include this
+    # in this class, but, eh.
+    def self.setsuperior(name)
+        @superior = name
+    end
+
     # Parameters to suppress in output.
     def self.suppress(name)
         @suppress ||= []
@@ -151,7 +183,6 @@ class Nagios::Base
 
     # Handle parameters like attributes.
     def method_missing(mname, *args)
-
         pname = mname.to_s
         pname.sub!(/=/, '')
         if self.class.parameter?(pname)
@@ -270,6 +301,8 @@ class Nagios::Base
 			:host_notification_commands, :service_notification_period,
 			:service_notification_commands,
 			:email, :pager, :service_notification_options, :host_notification_options
+
+        setsuperior "person"
 	end
 
 	newtype :contactgroup do
@@ -284,7 +317,7 @@ class Nagios::Base
 			:notification_period, :notification_options, :checks_enabled,
             :failure_prediction_enabled, :parents
 
-		@ocs = [ "ipHost" ]
+        setsuperior "person"
 
         map :address => "ipHostNumber"
 	end

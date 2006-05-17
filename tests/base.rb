@@ -27,7 +27,7 @@ class TestBase < Test::Unit::TestCase
     end
 
     # Make sure every type has a namevar.
-    def test_attributes
+    def test_typeattributes
         Nagios::Base.eachtype do |name, type|
             assert_nothing_raised {
                 assert(type.name, "Type %s did not return a name" % type)
@@ -43,6 +43,22 @@ class TestBase < Test::Unit::TestCase
                 assert(type.parameters, "Type %s did not return parameters" % type)
             }
         end
+    end
+
+    def test_camelcase
+        param = "this_is_a_long_camel_case_thing"
+        str = nil
+        assert_nothing_raised {
+            str = Nagios::Base.camelcase(param)
+        }
+
+        assert_equal("thisIsALongCamelCaseThing", str)
+
+        assert_nothing_raised {
+            str = Nagios::Base.decamelcase(str)
+        }
+
+        assert_equal(param, str, "camelcasing was not revertable")
     end
 end
 

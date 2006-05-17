@@ -12,21 +12,21 @@ result = GetoptLong.new(
 )
 
 module Syntax
-	@@syntaxes = Hash.new(
+	@@syntaxes = {
 		:string => {
 			:syntax => "1.3.6.1.4.1.1466.115.121.1.26",
-			:equality => "integerMatch"
+			:equality => "caseIgnoreIA5Match",
+			:substr => "caseIgnoreIA5SubstringsMatch"
 		},
 		:integer => {
 			:syntax => "1.3.6.1.4.1.1466.115.121.1.27",
-			:equality => "caseIgnoreIA5Match",
-			:substr => "caseIgnoreIA5SubstringsMatch"
+			:equality => "integerMatch"
 		},
 		:ipaddress => {
 			:syntax => "1.3.6.1.4.1.1466.115.121.1.26{128}",
 			:equality => "integerMatch"
 		}
-	)
+	}
 	def Syntax.config(type)
 		return @@syntaxes[type]
 	end
@@ -80,10 +80,10 @@ class Attribute
 		end
 	end
 
-	def Attribute.to_s
+	def Attribute.to_schema
 		#@@attrs.sort!
 		return @@attrs.sort.collect { |attr,obj|
-			obj.to_s
+			obj.to_schema
 		}.join('')
 	end
 
@@ -111,8 +111,16 @@ class Attribute
 		self.getdata
 	end
 
-	def to_s
-		return %{attributetype ( #{@oid} NAME 'nagios_#{@name}'
+    def ldapname
+        unless defined? @ldapname
+            @ldapname = Nagios::Base.camelcase("nagios_" + @name)
+        end
+
+        @ldapname
+    end
+
+	def to_schema
+		return %{attributetype ( #{@oid} NAME '#{ldapname}'
 	DESC 'Nagios Attribute #{@name}'
 	EQUALITY #{@equality}
 	SYNTAX #{@syntax} SINGLE-VALUE )
@@ -130,10 +138,9 @@ class Objectclass
         @@classes.each do |obj| yield obj end
     end
 
-	def Objectclass.to_s
-		#@@classes.sort!
-		@@classes.sort.each { |klass|
-			klass.to_s
+	def Objectclass.to_schema
+		@@classes.sort.collect { |klass|
+			klass.to_schema
 		}
 	end
 
@@ -144,17 +151,41 @@ class Objectclass
 	def initialize(type)
 		@@classes.push self
 		@oid = Oid.next
+        @type = type
 		@name = type.name.to_s
 		@params = type.parameters.collect { |param|
             Attribute.new(param.to_s)
-            "nagios_" + param.to_s
         }
 	end
 
-	def to_s
-		return %{objectclass ( #{@oid} NAME '#{"nagios_" + @name}' SUP top AUXILIARY
+    def ldapname
+        unless defined? @ldapname
+            @ldapname = Nagios::Base.camelcase("nagios_" + @name)
+        end
+
+        @ldapname
+    end
+
+	def to_schema
+        aux = ""
+        if @type.superior
+            aux = "AUXILIARY"
+        end
+		start = %{objectclass ( #{@oid} NAME '#{ldapname}' SUP top #{aux}
 	DESC 'Nagios Class #{@name}'
-	MAY ( } + Fun.pprint(@params.sort.join(' $ ') + " ) )") + "\n\n"
+	MAY ( }
+
+        finish = " ) )\n\n"
+
+        paramtext = @params.sort { |a,b| a.name.to_s <=> b.name.to_s }.collect do |param|
+            if val = @type.mapping(param.name)
+                val
+            else
+                param.ldapname
+            end
+        end.join(" $ ")
+
+        return start + Fun.pprint(paramtext) + finish
 	end
 end
 
@@ -162,11 +193,7 @@ Nagios::Base.eachtype do |name, type|
     klass = Objectclass.new(type)
 end
 
-puts Attribute.to_s
-puts Objectclass.to_s
-
-#Objectclass.each do |obj|
-#    puts obj.to_s
-#end
+puts Attribute.to_schema
+puts Objectclass.to_schema
 
 # $Id: mkschema,v 1.1 2004/03/04 03:18:49 luke Exp $
