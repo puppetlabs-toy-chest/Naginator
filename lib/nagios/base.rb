@@ -109,6 +109,23 @@ class Nagios::Base
         @types[name] = t
     end
 
+    # Define both the normal case and camelcase method for a parameter
+    def self.paramattr(name)
+        camel = camelcase(name)
+        param = name
+
+        [name, camel].each do |method|
+            define_method(method) do
+                @parameters[param]
+            end
+
+            define_method(method.to_s + "=") do |value|
+                @parameters[param] = value
+            end
+        end
+
+    end
+
     # Is the specified name a valid parameter?
     def self.parameter?(name)
         name = name.intern if name.is_a? String
@@ -185,8 +202,12 @@ class Nagios::Base
     def method_missing(mname, *args)
         pname = mname.to_s
         pname.sub!(/=/, '')
+
         if self.class.parameter?(pname)
-            self.class.send(:attr_accessor, pname)
+            if pname =~ /A-Z/
+                pname = self.class.decamelcase(pname)
+            end
+            self.class.paramattr(pname)
 
             # Now access the parameters directly, to make it at least less
             # likely we'll end up in an infinite recursion.
@@ -278,7 +299,13 @@ class Nagios::Base
         str = "define #{self.type} {\n"
 
         self.each { |param,value|
-            str += %{\t%-30s %s\n} % [ param.id2name, value ]
+            str += %{\t%-30s %s\n} % [ param,
+                if value.is_a? Array
+                    value.join(",")
+                else
+                    value
+                end
+                ]
         }
 
         str += "}\n"

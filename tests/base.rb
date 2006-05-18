@@ -15,12 +15,18 @@ class TestBase < Test::Unit::TestCase
         }
 
         assert_nothing_raised {
-            host.notifications_enabled = true
+            host.notifications_enabled = "yay"
         }
 
         assert(host.respond_to?(:notifications_enabled),
             "Did not define method")
 
+        assert_equal("yay", host.notifications_enabled)
+        
+        # Now check the camelcase version
+        assert_nothing_raised {
+            assert_equal("yay", host.notificationsEnabled)
+        }
         assert_raise(NoMethodError) do
             host.nosuchattribute = false
         end
