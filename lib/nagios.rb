@@ -12,6 +12,7 @@ require 'nagios/parser.rb'
 require 'nagios/base.rb'
 
 module Nagios
+    NAGIOSVERSION = '1.1'
     # yay colors
     PINK = "[0;31m"
     GREEN = "[0;32m"
