@@ -1,0 +1,5 @@
+1.1
+    Taking up development again:
+        Reworked the classes entirely
+        Added nagios.schema file
+        Changed installer and added a Rakefile

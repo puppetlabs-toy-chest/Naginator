@@ -9,7 +9,7 @@ end
 
 TESTHOSTS = %w{rh3a fedora1 centos1 freebsd1 culain}
 
-project = Rake::RedLabProject.new("naginator") do |p|
+project = Rake::RedLabProject.new("nagios") do |p|
     p.summary = "Ruby libraries for Nagios, including a parser"
     p.description = "Naginator is a set of support libraries for managing Nagios
         from within Ruby.  It includes a parser, so it is easy to get information
