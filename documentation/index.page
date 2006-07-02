@@ -1,0 +1,41 @@
+$Id$
+
+This is a collection of scripts and libraries meant to make it easy/possible
+to generate Nagios configurations.  The first and probably most important part
+of the collection is the set of libraries.  They include a parser for existing
+Nagios configurations plus the ability to create and easily print fully formed
+objects.  With these libraries, you can:
+	1) Parse any existing configuration
+	2) Create new configurations from scratch using other objects (e.g., SQL
+	or LDAP)
+	3) Write out either of the above configurations
+
+In addition to the libraries, a few utilities have been written.  Currently
+(as of 7/26/04) these utilities are largely centered around a single purpose:
+Using cfengine (http://www.cfengine.org) to generate Nagios configurations for
+all of my clients.  This collection is special, though, because it generates
+the configurations 1) on the client itself 2) and in two configurations -- one
+meant to be run against locally and one meant to be centralized and aggregated
+with all other clients.
+
+This results in a large star-type Nagios network.  I have a Nagios process
+running on every host on my network, and the central Nagios server has two
+processes -- one running the aggregated config and one running the local
+config for the server.  Every local nagios process uses nsca to submit passive
+checks, and the central server receives those, and produces warnings if the
+checks get stale.
+
+This system does not actually require cfengine, I just find it to be
+incredibly useful.  The basic idea is that you run a script (currently at
+cfengine/modules/module:nagios), passing it 1) a list of services to monitor,
+and 2) a list of classes the server is a member of.  The script matches those
+services against services defined in the 'checkcommands.cfg' file, and the
+classes are matched against 'hostgroups.cfg'.  If any services not defined in
+'checkcommands.cfg' are passed, an error will result, but it is assumed that
+there are many classes passed from cfengine that will not be hostgroups, so it
+is not an error to pass unknown hostgroups.  See the
+cfengine/inputs/nagios[12].cf files for a basic example of how this is done.
+
+I know this isn't very well documented, but it's not actually that much code.
+Feel free to email me at <luke at madstop.com> for more information or
+whatnot.

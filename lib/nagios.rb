@@ -23,6 +23,10 @@ module Nagios
     NOCOLOR = "[0m"
     RESET = "[0m"
 
+    def self.version
+        NAGIOSVERSION
+    end
+
 	class Config
 		def Config.import(config)
 
