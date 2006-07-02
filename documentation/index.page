@@ -1,13 +1,13 @@
 ---
-inMenu: true
+inMenu: false
 directoryName: Naginator
 ---
 
-This is a collection of scripts and libraries meant to make it easy/possible
-to generate Nagios configurations.  The first and probably most important part
-of the collection is the set of libraries.  They include a parser for existing
-Nagios configurations plus the ability to create and easily print fully formed
-objects.  With these libraries, you can:
+This is a collection of scripts and libraries meant to make it easy/possible to
+generate [Nagios](http://nagios.org) configurations.  The first and probably
+most important part of the collection is the set of libraries.  They include a
+parser for existing Nagios configurations plus the ability to create and easily
+print fully formed objects.  With these libraries, you can:
 
 * Parse any existing configuration
 * Create new configurations from scratch using other objects (e.g., SQL or LDAP)

@@ -1,0 +1,7 @@
+---
+inMenu: true
+---
+
+Just run ``sudo ruby ./install.rb``.
+
+*$Id$*
