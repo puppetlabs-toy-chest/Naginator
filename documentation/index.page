@@ -1,14 +1,17 @@
-$Id$
+---
+inMenu: true
+directoryName: Naginator
+---
 
 This is a collection of scripts and libraries meant to make it easy/possible
 to generate Nagios configurations.  The first and probably most important part
 of the collection is the set of libraries.  They include a parser for existing
 Nagios configurations plus the ability to create and easily print fully formed
 objects.  With these libraries, you can:
-	1) Parse any existing configuration
-	2) Create new configurations from scratch using other objects (e.g., SQL
-	or LDAP)
-	3) Write out either of the above configurations
+
+* Parse any existing configuration
+* Create new configurations from scratch using other objects (e.g., SQL or LDAP)
+* Write out either of the above configurations
 
 In addition to the libraries, a few utilities have been written.  Currently
 (as of 7/26/04) these utilities are largely centered around a single purpose:
@@ -39,3 +42,5 @@ cfengine/inputs/nagios[12].cf files for a basic example of how this is done.
 I know this isn't very well documented, but it's not actually that much code.
 Feel free to email me at <luke at madstop.com> for more information or
 whatnot.
+
+*$Id$*
