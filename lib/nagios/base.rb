@@ -196,6 +196,9 @@ class Nagios::Base
         args.each { |param,value|
             self[param] = value
         }
+        if @namevar == :_naginator_name
+          self['_naginator_name'] = self['name']
+        end
     end
 
     # Handle parameters like attributes.
@@ -363,23 +366,26 @@ class Nagios::Base
     end
 
     newtype :hostescalation do
-        setparameters :name, :first_notification, :last_notification,
+        setparameters :first_notification, :last_notification,
             :notification_interval, :contact_groups,
-            :escalation_options, :register, :hostgroup_name
-        setnamevar :name
+            :escalation_options, :register, :hostgroup_name,
+            :_naginator_name
+
+        setnamevar :_naginator_name
     end              
 
     newtype :hostgroupescalation do
         auxiliary = true
         setparameters :hostgroup_name, :first_notification, :last_notification,
-            :contact_groups, :notification_interval
+            :contact_groups, :notification_interval,
+            :_naginator_name
 
-        setnamevar :hostgroup_name
+        setnamevar :_naginator_name
     end
 
     newtype :service do
         attach :host => :host_name
-        setparameters :name, :active_checks_enabled, :passive_checks_enabled,
+        setparameters :active_checks_enabled, :passive_checks_enabled,
             :parallelize_check, :obsess_over_service, :check_freshness,
             :notifications_enabled, :event_handler_enabled,
             :flap_detection_enabled, :process_perf_data,
@@ -388,11 +394,12 @@ class Nagios::Base
             :normal_check_interval, :retry_check_interval, :contact_groups,
             :notification_interval, :notification_period, :notification_options,
             :service_description, :host_name, :freshness_threshold,
-            :check_command, :hostgroup_name, :event_handler, :servicegroups, :host
+            :check_command, :hostgroup_name, :event_handler, :servicegroups, :host,
+            :_naginator_name
 
         suppress :host_name
 
-        setnamevar :service_description
+        setnamevar :_naginator_name
     end
 
     newtype :servicedependency do
@@ -400,30 +407,30 @@ class Nagios::Base
         setparameters :host_name, :service_description, :dependent_host_name,
             :dependent_service_description, :execution_failure_criteria,
             :notification_failure_criteria, :hostgroup_name, 
-            :dependent_hostgroup_name
+            :dependent_hostgroup_name, :_naginator_name
 
-        setnamevar :host_name
+        setnamevar :_naginator_name
     end
 
     newtype :serviceescalation do
         setparameters :host_name, :service_description, :first_notification,
-            :last_notification, :contact_groups, :notification_interval, :hostgroup_name
+            :last_notification, :contact_groups, :notification_interval, :hostgroup_name,
+            :_naginator_name
 
-        setnamevar :host_name
+        setnamevar :_naginator_name
     end
 
     newtype :servicegroup do
         setparameters :servicegroup_name, :alias
-
-        setnamevar :servicegroup_name
     end
 
     newtype :serviceextinfo do
         auxiliary = true
 
-        setparameters :host_name, :service_description, :icon_image, :icon_image_alt
+        setparameters :host_name, :service_description, :icon_image, :icon_image_alt,
+          :_naginator_name
 
-        setnamevar :host_name
+        setnamevar :_naginator_name
     end
 
     newtype :timeperiod do
