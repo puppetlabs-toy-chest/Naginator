@@ -416,20 +416,18 @@ class Nagios::Base
             :dependent_service_description, :host_name, :hostgroup_name,
             :service_description, :inherits_parent, :execution_failure_criteria,
             :notification_failure_criteria, :dependency_period,
-            :register, :use,
-            :_naginator_name
+            :register, :use
 
-        setnamevar :_naginator_name
+        setnamevar :host_name
     end
 
     newtype :serviceescalation do
         setparameters :host_name, :hostgroup_name, :service_description, :contacts,
             :contact_groups, :first_notification, :last_notification,
             :notification_interval, :escalation_period, :escalation_options,
-            :register, :use,
-            :_naginator_name
+            :register, :use
 
-        setnamevar :_naginator_name
+        setnamevar :host_name
     end
 
     newtype :hostdependency do
@@ -439,17 +437,16 @@ class Nagios::Base
           :notification_failure_criteria, :dependency_period,
           :register, :use
 
-      setnamevar :_naginator_name
+      setnamevar :host_name
     end
 
     newtype :hostescalation do
         setparameters :host_name, :hostgroup_name, :contacts, :contact_groups,
             :first_notification, :last_notification, :notification_interval,
             :escalation_period, :escalation_options,
-            :register, :use,
-            :_naginator_name
+            :register, :use
 
-        setnamevar :_naginator_name
+        setnamevar :host_name
     end
 
     newtype :hostextinfo do
@@ -466,10 +463,9 @@ class Nagios::Base
 
         setparameters :host_name, :service_description, :notes, :notes_url,
             :action_url, :icon_image, :icon_image_alt,
-            :register, :use,
-            :_naginator_name
+            :register, :use
 
-        setnamevar :_naginator_name
+        setnamevar :host_name
     end
 
 end
